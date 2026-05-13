@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+:root {
+  --bg-main: #020617;
+  --bg-card: #18181b;
+  --bg-soft: #09090b;
+  --text-main: #ffffff;
+  --text-muted: #a1a1aa;
+  --border-main: #27272a;
+}
+
+html.light {
+  --bg-main: #f4f6fb;
+  --bg-card: #ffffff;
+  --bg-soft: #eef1f6;
+  --text-main: #111827;
+  --text-muted: #6b7280;
+  --border-main: #d1d5db;
+}
+
+html.dark {
+  --bg-main: #020617;
+  --bg-card: #18181b;
+  --bg-soft: #09090b;
+  --text-main: #ffffff;
+  --text-muted: #a1a1aa;
+  --border-main: #27272a;
+}
+
+body {
+  background: var(--bg-main);
+  color: var(--text-main);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.app-bg {
+  background: var(--bg-main);
+  color: var(--text-main);
+}
+
+.app-card {
+  background: var(--bg-card);
+  color: var(--text-main);
+  border: 1px solid var(--border-main);
+}
+
+.app-soft {
+  background: var(--bg-soft);
+  color: var(--text-main);
+  border: 1px solid var(--border-main);
+}
+
+.app-muted {
+  color: var(--text-muted);
+}
+
+.app-input {
+  background: var(--bg-soft);
+  color: var(--text-main);
+  border: 1px solid var(--border-main);
+}
+
+button {
+  cursor: pointer;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  overflow-x: hidden;
+}
