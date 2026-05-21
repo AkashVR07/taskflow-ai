@@ -120,21 +120,21 @@ export default function LoginPage() {
               : "Login"}
           </button>
 
-          <div className="mt-6 flex flex-col items-center gap-2">
-            <span className="app-muted text-sm">
-              Don&apos;t have an account?
-            </span>
+          <div className="mt-6 flex items-center justify-center gap-2 text-sm">
+  <span className="app-muted">
+    Don&apos;t have an account?
+  </span>
 
-            <button
-              type="button"
-              onClick={() =>
-                router.push("/register")
-              }
-              className="text-cyan-400 font-bold hover:text-cyan-300 transition-all duration-300"
-            >
-              Register
-            </button>
-          </div>
+  <button
+    type="button"
+    onClick={() =>
+      router.push("/register")
+    }
+    className="text-cyan-400 font-bold hover:text-cyan-300 transition-all duration-300"
+  >
+    Register
+  </button>
+</div>
         </div>
       </motion.form>
     </div>
