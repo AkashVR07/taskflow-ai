@@ -119,14 +119,20 @@ export default function LoginPage() {
           </div>
 
           <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white p-4 rounded-2xl font-semibold shadow-lg hover:scale-[1.02] transition-all duration-300 disabled:opacity-50"
-          >
-            {loading
-              ? "Logging in..."
-              : "Login"}
-          </button>
+  type="submit"
+  disabled={loading}
+  className="w-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white p-4 rounded-2xl font-semibold shadow-lg hover:scale-[1.02] transition-all duration-300 disabled:opacity-50"
+>
+  {loading ? "Logging in..." : "Login"}
+</button>
+
+<button
+  type="button"
+  onClick={() => router.push("/register")}
+  className="w-full mt-4 border border-cyan-500 text-cyan-400 p-4 rounded-2xl font-semibold hover:bg-cyan-500 hover:text-white transition-all duration-300"
+>
+  Create New Account
+</button>
 
           <div className="text-center mt-5">
             <span className="app-muted text-sm">
