@@ -9,12 +9,9 @@ import { motion } from "framer-motion";
 export default function LoginPage() {
   const router = useRouter();
 
-  const [email, setEmail] =
-    useState("");
-
+  const [email, setEmail] = useState("");
   const [password, setPassword] =
     useState("");
-
   const [loading, setLoading] =
     useState(false);
 
@@ -42,15 +39,12 @@ export default function LoginPage() {
 
       document.cookie = `token=${data.token}; path=/; max-age=86400`;
 
-      toast.success(
-        "Login Successful"
-      );
+      toast.success("Login Successful");
 
       router.push("/dashboard");
     } catch (error: any) {
       toast.error(
-        error?.response?.data
-          ?.message ||
+        error?.response?.data?.message ||
           "Login Failed"
       );
     } finally {
@@ -97,9 +91,7 @@ export default function LoginPage() {
               className="w-full p-4 rounded-2xl app-input outline-none focus:border-cyan-500 transition-all duration-300"
               value={email}
               onChange={(e) =>
-                setEmail(
-                  e.target.value
-                )
+                setEmail(e.target.value)
               }
               required
             />
@@ -116,9 +108,7 @@ export default function LoginPage() {
               className="w-full p-4 rounded-2xl app-input outline-none focus:border-cyan-500 transition-all duration-300"
               value={password}
               onChange={(e) =>
-                setPassword(
-                  e.target.value
-                )
+                setPassword(e.target.value)
               }
               required
             />
@@ -133,6 +123,19 @@ export default function LoginPage() {
               ? "Logging in..."
               : "Login"}
           </button>
+
+          <p className="text-center app-muted text-sm pt-2">
+            Don&apos;t have an account?{" "}
+            <button
+              type="button"
+              onClick={() =>
+                router.push("/register")
+              }
+              className="text-cyan-400 font-semibold hover:underline"
+            >
+              Register
+            </button>
+          </p>
         </div>
       </motion.form>
     </div>
