@@ -134,21 +134,13 @@ export default function LoginPage() {
   Create New Account
 </button>
 
-          <div className="text-center mt-5">
-            <span className="app-muted text-sm">
-              Don&apos;t have an account?{" "}
-            </span>
-
-            <button
-              type="button"
-              onClick={() =>
-                router.push("/register")
-              }
-              className="text-cyan-400 font-bold hover:underline"
-            >
-              Register
-            </button>
-          </div>
+          <button
+  type="button"
+  onClick={() => router.push("/register")}
+  className="w-full mt-4 border border-cyan-500 text-cyan-400 p-4 rounded-2xl font-semibold hover:bg-cyan-500 hover:text-white transition-all duration-300"
+>
+  Create New Account
+</button>
         </div>
       </motion.form>
     </div>
