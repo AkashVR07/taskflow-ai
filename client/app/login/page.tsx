@@ -59,17 +59,9 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen app-bg flex items-center justify-center px-4 py-10">
       <motion.form
-        initial={{
-          opacity: 0,
-          y: 30,
-        }}
-        animate={{
-          opacity: 1,
-          y: 0,
-        }}
-        transition={{
-          duration: 0.4,
-        }}
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
         onSubmit={submitHandler}
         className="app-card w-full max-w-md p-8 rounded-3xl shadow-2xl border border-[var(--border-main)]"
       >
@@ -119,28 +111,30 @@ export default function LoginPage() {
           </div>
 
           <button
-  type="submit"
-  disabled={loading}
-  className="w-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white p-4 rounded-2xl font-semibold shadow-lg hover:scale-[1.02] transition-all duration-300 disabled:opacity-50"
->
-  {loading ? "Logging in..." : "Login"}
-</button>
+            type="submit"
+            disabled={loading}
+            className="w-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white p-4 rounded-2xl font-semibold shadow-lg hover:scale-[1.02] transition-all duration-300 disabled:opacity-50"
+          >
+            {loading
+              ? "Logging in..."
+              : "Login"}
+          </button>
 
-<button
-  type="button"
-  onClick={() => router.push("/register")}
-  className="w-full mt-4 border border-cyan-500 text-cyan-400 p-4 rounded-2xl font-semibold hover:bg-cyan-500 hover:text-white transition-all duration-300"
->
-  Create New Account
-</button>
+          <div className="mt-6 flex flex-col items-center gap-2">
+            <span className="app-muted text-sm">
+              Don&apos;t have an account?
+            </span>
 
-          <button
-  type="button"
-  onClick={() => router.push("/register")}
-  className="w-full mt-4 border border-cyan-500 text-cyan-400 p-4 rounded-2xl font-semibold hover:bg-cyan-500 hover:text-white transition-all duration-300"
->
-  Create New Account
-</button>
+            <button
+              type="button"
+              onClick={() =>
+                router.push("/register")
+              }
+              className="text-cyan-400 font-bold hover:text-cyan-300 transition-all duration-300"
+            >
+              Register
+            </button>
+          </div>
         </div>
       </motion.form>
     </div>
