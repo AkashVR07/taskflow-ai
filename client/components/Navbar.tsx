@@ -10,6 +10,10 @@ export default function Navbar() {
 
   const logoutHandler = () => {
     localStorage.removeItem("userInfo");
+
+    document.cookie =
+    "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    
     router.push("/login");
   };
 

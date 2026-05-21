@@ -39,7 +39,7 @@ export default function DashboardPage() {
     if (!userInfo?.token) return;
 
     try {
-      const { data } = await axios.get("process.env.NEXT_PUBLIC_API_URL/api/tasks", {
+      const { data } = await axios.get("`${process.env.NEXT_PUBLIC_API_URL}/api/tasks`/api/tasks", {
         headers: {
           Authorization: `Bearer ${userInfo.token}`,
         },
@@ -74,7 +74,7 @@ export default function DashboardPage() {
       setLoading(true);
 
       await axios.post(
-        "process.env.NEXT_PUBLIC_API_URL/api/tasks",
+        "`${process.env.NEXT_PUBLIC_API_URL}/api/tasks`/api/tasks",
         {
           title,
           description,
@@ -110,7 +110,7 @@ export default function DashboardPage() {
       setAiSuggestion("");
 
       const { data } = await axios.post(
-        "process.env.NEXT_PUBLIC_API_URL/api/ai/suggestions",
+        "`${process.env.NEXT_PUBLIC_API_URL}/api/tasks`/api/ai/suggestions",
         { tasks },
         {
           headers: {

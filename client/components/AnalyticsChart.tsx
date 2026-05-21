@@ -91,10 +91,10 @@ export default function AnalyticsChart({
           <div className="w-3 h-3 rounded-full bg-blue-400 animate-pulse" />
         </div>
 
-        <div className="h-[250px] sm:h-[300px]">
+        <div className="w-full min-w-0 h-[250px] sm:h-[300px]">
           <ResponsiveContainer
             width="100%"
-            height="100%"
+            height={300}
           >
             <BarChart data={statusData}>
               <XAxis
@@ -151,10 +151,10 @@ export default function AnalyticsChart({
           <div className="w-3 h-3 rounded-full bg-pink-400 animate-pulse" />
         </div>
 
-        <div className="h-[250px] sm:h-[300px]">
+        <div className="w-full min-w-0 h-[250px] sm:h-[300px]">
           <ResponsiveContainer
             width="100%"
-            height="100%"
+            height={300}
           >
             <PieChart>
               <Pie

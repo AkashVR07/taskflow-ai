@@ -41,7 +41,7 @@ export default function KanbanBoard({
   ) => {
     try {
       await axios.put(
-        `process.env.NEXT_PUBLIC_API_URL/api/tasks/${taskId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/tasks/${taskId}`,
         { status },
         {
           headers: {

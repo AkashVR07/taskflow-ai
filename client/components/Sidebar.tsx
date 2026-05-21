@@ -76,7 +76,7 @@ export default function Sidebar() {
           onClick={() => setOpen(true)}
           className="lg:hidden fixed top-4 left-4 z-[1000] w-9 h-9 rounded-lg bg-white/90 text-black border border-zinc-200 shadow-md flex items-center justify-center backdrop-blur-md"
         >
-          <Menu size={22} />
+          <Menu size={18} />
         </button>
       )}
 

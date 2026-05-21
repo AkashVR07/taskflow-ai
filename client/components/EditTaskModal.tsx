@@ -40,7 +40,7 @@ export default function EditTaskModal({
       setLoading(true);
 
       await axios.put(
-        `process.env.NEXT_PUBLIC_API_URL/api/tasks/${task._id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/tasks/${task._id}`,
         {
           title,
           description,
@@ -150,7 +150,8 @@ export default function EditTaskModal({
                 type="date"
                 value={dueDate}
                 onChange={(e) => setDueDate(e.target.value)}
-                className="w-full p-3 sm:p-4 rounded-2xl app-input outline-none focus:border-blue-500 transition-all duration-300"
+                className="w-full p-3 sm:p-4 rounded-2xl app-input outline-none focus:border-cyan-500 transition-all duration-300 text-white"
+                style={{ colorScheme: "dark" }}
               />
             </div>
           </div>

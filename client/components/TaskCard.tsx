@@ -39,7 +39,7 @@ export default function TaskCard({
   const updateStatus = async () => {
     try {
       await axios.put(
-        `process.env.NEXT_PUBLIC_API_URL/api/tasks/${id}`,
+         `${process.env.NEXT_PUBLIC_API_URL}/api/tasks/${id}`,
         {},
         {
           headers: {
@@ -60,7 +60,7 @@ export default function TaskCard({
   const deleteTask = async () => {
     try {
       await axios.delete(
-        `process.env.NEXT_PUBLIC_API_URL/api/tasks/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/tasks/${id}`,
         {
           headers: {
             Authorization: `Bearer ${userInfo.token}`,

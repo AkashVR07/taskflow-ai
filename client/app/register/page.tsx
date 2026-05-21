@@ -2,70 +2,175 @@
 
 import { useState } from "react";
 import axios from "axios";
-import { toast } from "react-hot-toast";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 
 export default function RegisterPage() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const router = useRouter();
 
-  const submitHandler = async (e: React.FormEvent) => {
+  const [name, setName] =
+    useState("");
+
+  const [email, setEmail] =
+    useState("");
+
+  const [password, setPassword] =
+    useState("");
+
+  const [loading, setLoading] =
+    useState(false);
+
+  const submitHandler = async (
+    e: React.FormEvent
+  ) => {
     e.preventDefault();
 
     try {
-      const { data } = await axios.post(
-        "process.env.NEXT_PUBLIC_API_URL/api/auth/register",
-        {
-          name,
-          email,
-          password,
-        }
+      setLoading(true);
+
+      const { data } =
+        await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/auth/register`,
+          {
+            name,
+            email,
+            password,
+          }
+        );
+
+      localStorage.setItem(
+        "userInfo",
+        JSON.stringify(data)
       );
 
-      localStorage.setItem("userInfo", JSON.stringify(data));
+      document.cookie = `token=${data.token}; path=/; max-age=86400`;
 
-      toast.success("Registration Successful");
+      toast.success(
+        "Registration Successful"
+      );
+
+      router.push("/dashboard");
     } catch (error: any) {
-      toast.error(error.response.data.message);
+      toast.error(
+        error?.response?.data
+          ?.message ||
+          "Registration Failed"
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-black text-white">
-      <form
+    <div className="min-h-screen app-bg flex items-center justify-center px-4">
+      <motion.form
+        initial={{
+          opacity: 0,
+          y: 30,
+        }}
+        animate={{
+          opacity: 1,
+          y: 0,
+        }}
+        transition={{
+          duration: 0.4,
+        }}
         onSubmit={submitHandler}
-        className="bg-zinc-900 p-8 rounded-2xl w-[400px] space-y-4"
+        className="app-card w-full max-w-md p-8 rounded-3xl shadow-2xl border border-[var(--border-main)]"
       >
-        <h1 className="text-3xl font-bold text-center">Register</h1>
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-extrabold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">
+            TaskFlow AI
+          </h1>
 
-        <input
-          type="text"
-          placeholder="Name"
-          className="w-full p-3 rounded bg-zinc-800"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
+          <p className="app-muted mt-3">
+            Create your account
+          </p>
+        </div>
 
-        <input
-          type="email"
-          placeholder="Email"
-          className="w-full p-3 rounded bg-zinc-800"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+        <div className="space-y-5">
+          <div>
+            <label className="block mb-2 font-medium">
+              Name
+            </label>
 
-        <input
-          type="password"
-          placeholder="Password"
-          className="w-full p-3 rounded bg-zinc-800"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+            <input
+              type="text"
+              placeholder="Enter your name"
+              className="w-full p-4 rounded-2xl app-input outline-none focus:border-cyan-500 transition-all duration-300"
+              value={name}
+              onChange={(e) =>
+                setName(
+                  e.target.value
+                )
+              }
+              required
+            />
+          </div>
 
-        <button className="w-full bg-white text-black p-3 rounded font-semibold">
-          Register
-        </button>
-      </form>
+          <div>
+            <label className="block mb-2 font-medium">
+              Email
+            </label>
+
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="w-full p-4 rounded-2xl app-input outline-none focus:border-cyan-500 transition-all duration-300"
+              value={email}
+              onChange={(e) =>
+                setEmail(
+                  e.target.value
+                )
+              }
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block mb-2 font-medium">
+              Password
+            </label>
+
+            <input
+              type="password"
+              placeholder="Enter your password"
+              className="w-full p-4 rounded-2xl app-input outline-none focus:border-cyan-500 transition-all duration-300"
+              value={password}
+              onChange={(e) =>
+                setPassword(
+                  e.target.value
+                )
+              }
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white p-4 rounded-2xl font-semibold shadow-lg hover:scale-[1.02] transition-all duration-300 disabled:opacity-50"
+          >
+            {loading
+              ? "Creating account..."
+              : "Register"}
+          </button>
+
+          <p className="text-center app-muted text-sm">
+            Already have an account?{" "}
+            <button
+              type="button"
+              onClick={() =>
+                router.push("/login")
+              }
+              className="text-cyan-400 font-semibold hover:underline"
+            >
+              Login
+            </button>
+          </p>
+        </div>
+      </motion.form>
     </div>
   );
 }
