@@ -12,6 +12,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] =
     useState("");
+
   const [loading, setLoading] =
     useState(false);
 
@@ -39,12 +40,15 @@ export default function LoginPage() {
 
       document.cookie = `token=${data.token}; path=/; max-age=86400`;
 
-      toast.success("Login Successful");
+      toast.success(
+        "Login Successful"
+      );
 
       router.push("/dashboard");
     } catch (error: any) {
       toast.error(
-        error?.response?.data?.message ||
+        error?.response?.data
+          ?.message ||
           "Login Failed"
       );
     } finally {
@@ -53,7 +57,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen app-bg flex items-center justify-center px-4">
+    <div className="min-h-screen app-bg flex items-center justify-center px-4 py-10">
       <motion.form
         initial={{
           opacity: 0,
@@ -67,7 +71,7 @@ export default function LoginPage() {
           duration: 0.4,
         }}
         onSubmit={submitHandler}
-        className="app-card w-full max-w-md p-8 rounded-3xl shadow-2xl border border-[var(--border-main)] space-y-2"
+        className="app-card w-full max-w-md p-8 rounded-3xl shadow-2xl border border-[var(--border-main)]"
       >
         <div className="text-center mb-6">
           <h1 className="text-4xl font-extrabold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">
@@ -124,18 +128,21 @@ export default function LoginPage() {
               : "Login"}
           </button>
 
-          <p className="text-center app-muted text-sm pt-2">
-            Don&apos;t have an account?{" "}
+          <div className="text-center mt-5">
+            <span className="app-muted text-sm">
+              Don&apos;t have an account?{" "}
+            </span>
+
             <button
               type="button"
               onClick={() =>
                 router.push("/register")
               }
-              className="text-cyan-400 font-semibold hover:underline"
+              className="text-cyan-400 font-bold hover:underline"
             >
               Register
             </button>
-          </p>
+          </div>
         </div>
       </motion.form>
     </div>
