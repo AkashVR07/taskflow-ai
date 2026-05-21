@@ -67,9 +67,9 @@ export default function LoginPage() {
           duration: 0.4,
         }}
         onSubmit={submitHandler}
-        className="app-card w-full max-w-md p-8 rounded-3xl shadow-2xl border border-[var(--border-main)]"
+        className="app-card w-full max-w-md p-8 rounded-3xl shadow-2xl border border-[var(--border-main)] space-y-2"
       >
-        <div className="text-center mb-8">
+        <div className="text-center mb-6">
           <h1 className="text-4xl font-extrabold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">
             TaskFlow AI
           </h1>
@@ -79,7 +79,7 @@ export default function LoginPage() {
           </p>
         </div>
 
-        <div className="space-y-5">
+        <div className="space-y-4">
           <div>
             <label className="block mb-2 font-medium">
               Email
