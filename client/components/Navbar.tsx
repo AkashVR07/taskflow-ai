@@ -53,7 +53,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="w-full mb-8">
+    <header className="relative z-[999] w-full mb-8">
       <div className="app-card rounded-3xl p-4 sm:p-5 border border-white/10 shadow-xl backdrop-blur-xl">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
 
@@ -189,7 +189,7 @@ export default function Navbar() {
                 </button>
 
                 {openProfile && (
-                  <div className="absolute right-0 top-16 w-64 rounded-2xl border border-white/10 bg-[#111827]/95 backdrop-blur-xl shadow-2xl overflow-hidden z-50">
+                  <div className="absolute right-0 top-16 w-64 rounded-2xl border border-white/10 bg-[#111827]/95 backdrop-blur-xl shadow-2xl overflow-hidden z-[9999]">
 
                     <div className="p-4 border-b border-white/10">
                       <p className="font-semibold">
