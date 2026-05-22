@@ -133,7 +133,7 @@ export default function RegisterPage() {
             <input
               type="text"
               placeholder="Enter your name"
-              className="w-full p-4 rounded-2xl bg-black/40 border border-white/10 text-white placeholder:text-gray-400 outline-none focus:border-cyan-500 transition-all duration-300"
+              className="auth-input w-full p-4 rounded-2xl outline-none transition-all duration-300"
               value={name}
               onChange={(e) =>
                 setName(e.target.value)
@@ -151,7 +151,7 @@ export default function RegisterPage() {
             <input
               type="email"
               placeholder="Enter your email"
-              className="w-full p-4 rounded-2xl bg-black/40 border border-white/10 text-white placeholder:text-gray-400 outline-none focus:border-cyan-500 transition-all duration-300"
+              className="auth-input w-full p-4 rounded-2xl outline-none transition-all duration-300"
               value={email}
               onChange={(e) =>
                 setEmail(e.target.value)
@@ -174,7 +174,7 @@ export default function RegisterPage() {
                     : "password"
                 }
                 placeholder="Enter your password"
-                className="w-full p-4 pr-12 rounded-2xl bg-black/40 border border-white/10 text-white placeholder:text-gray-400 outline-none focus:border-cyan-500 transition-all duration-300"
+                className="auth-input w-full p-4 pr-12 rounded-2xl outline-none transition-all duration-300"
                 value={password}
                 onChange={(e) =>
                   setPassword(
@@ -237,7 +237,7 @@ export default function RegisterPage() {
 
           {/* Confirm Password */}
           <div>
-            <label className="block mb-2 font-medium text-white">
+            <label className="auth-input w-full p-4 pr-12 rounded-2xl outline-none transition-all duration-300">
               Confirm Password
             </label>
 
