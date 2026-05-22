@@ -27,11 +27,17 @@ export default function DashboardPage() {
   const [tasks, setTasks] = useState<any[]>([]);
   const [userInfo, setUserInfo] = useState<any>(null);
 
-  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showCreateModal, setShowCreateModal] =
+    useState(false);
 
-  const [search, setSearch] = useState("");
-  const [filterPriority, setFilterPriority] = useState("All");
-  const [sortBy, setSortBy] = useState("Newest");
+  const [search, setSearch] =
+    useState("");
+
+  const [filterPriority, setFilterPriority] =
+    useState("All");
+
+  const [sortBy, setSortBy] =
+    useState("Newest");
 
   const fetchTasks = async () => {
     if (!userInfo?.token) return;
@@ -47,44 +53,68 @@ export default function DashboardPage() {
       );
 
       setTasks(data);
+
     } catch (error) {
       console.log(error);
-      toast.error("Failed to fetch tasks");
+
+      toast.error(
+        "Failed to fetch tasks"
+      );
     }
   };
 
   const filteredTasks = [...tasks]
     .filter((task) => {
-      const matchesSearch = task.title
-        ?.toLowerCase()
-        .includes(search.toLowerCase());
+      const matchesSearch =
+        task.title
+          ?.toLowerCase()
+          .includes(
+            search.toLowerCase()
+          );
 
       const matchesPriority =
         filterPriority === "All"
           ? true
-          : task.priority === filterPriority;
+          : task.priority ===
+            filterPriority;
 
-      return matchesSearch && matchesPriority;
+      return (
+        matchesSearch &&
+        matchesPriority
+      );
     })
+
     .sort((a, b) => {
       if (sortBy === "Newest") {
         return (
-          new Date(b.createdAt).getTime() -
-          new Date(a.createdAt).getTime()
+          new Date(
+            b.createdAt
+          ).getTime() -
+          new Date(
+            a.createdAt
+          ).getTime()
         );
       }
 
       if (sortBy === "Oldest") {
         return (
-          new Date(a.createdAt).getTime() -
-          new Date(b.createdAt).getTime()
+          new Date(
+            a.createdAt
+          ).getTime() -
+          new Date(
+            b.createdAt
+          ).getTime()
         );
       }
 
       if (sortBy === "Due Date") {
         return (
-          new Date(a.dueDate || "").getTime() -
-          new Date(b.dueDate || "").getTime()
+          new Date(
+            a.dueDate || ""
+          ).getTime() -
+          new Date(
+            b.dueDate || ""
+          ).getTime()
         );
       }
 
@@ -92,14 +122,19 @@ export default function DashboardPage() {
     });
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("userInfo");
+    const storedUser =
+      localStorage.getItem(
+        "userInfo"
+      );
 
     if (!storedUser) {
       router.push("/login");
       return;
     }
 
-    setUserInfo(JSON.parse(storedUser));
+    setUserInfo(
+      JSON.parse(storedUser)
+    );
   }, [router]);
 
   useEffect(() => {
@@ -113,17 +148,35 @@ export default function DashboardPage() {
       <Sidebar />
 
       <motion.main
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
+        initial={{
+          opacity: 0,
+          y: 20,
+        }}
+        animate={{
+          opacity: 1,
+          y: 0,
+        }}
+        transition={{
+          duration: 0.5,
+        }}
         className="lg:ml-72 min-w-0 px-4 py-5 pb-28 md:px-8 lg:px-10 lg:pb-5 overflow-x-hidden"
       >
+
         <Navbar />
 
-        <section id="dashboard" className="pt-6 scroll-mt-8">
-          <UserProfileCard user={userInfo} tasks={tasks} />
+        {/* DASHBOARD */}
+        <section
+          id="dashboard"
+          className="pt-6 scroll-mt-8"
+        >
+
+          <UserProfileCard
+            user={userInfo}
+            tasks={tasks}
+          />
 
           <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6 mt-6">
+
             <DashboardCard
               title="Total Tasks"
               value={tasks.length.toString()}
@@ -134,7 +187,11 @@ export default function DashboardPage() {
             <DashboardCard
               title="Completed"
               value={tasks
-                .filter((task) => task.status === "Completed")
+                .filter(
+                  (task) =>
+                    task.status ===
+                    "Completed"
+                )
                 .length.toString()}
               icon="✅"
               gradient="from-green-500 to-emerald-500"
@@ -143,7 +200,11 @@ export default function DashboardPage() {
             <DashboardCard
               title="Pending"
               value={tasks
-                .filter((task) => task.status === "Pending")
+                .filter(
+                  (task) =>
+                    task.status ===
+                    "Pending"
+                )
                 .length.toString()}
               icon="⏳"
               gradient="from-yellow-500 to-orange-500"
@@ -152,50 +213,86 @@ export default function DashboardPage() {
             <DashboardCard
               title="High Priority"
               value={tasks
-                .filter((task) => task.priority === "High")
+                .filter(
+                  (task) =>
+                    task.priority ===
+                    "High"
+                )
                 .length.toString()}
               icon="🔥"
               gradient="from-pink-500 to-red-500"
             />
+
           </section>
 
           <NotificationCenter tasks={tasks} />
 
           <section className="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6 mt-8">
+
             <ActivityFeed tasks={tasks} />
 
             <ProgressRing
               completed={
-                tasks.filter((task) => task.status === "Completed")
-                  .length
+                tasks.filter(
+                  (task) =>
+                    task.status ===
+                    "Completed"
+                ).length
               }
               total={tasks.length}
             />
+
           </section>
 
           <section className="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6 mt-8">
+
             <ActivityTimeline tasks={tasks} />
+
             <CalendarView tasks={tasks} />
+
           </section>
+
         </section>
 
-        <section id="analytics" className="pt-20 scroll-mt-8">
+        {/* ANALYTICS */}
+        <section
+          id="analytics"
+          className="pt-20 scroll-mt-8"
+        >
           <AnalyticsChart tasks={tasks} />
         </section>
 
-        <section id="tasks" className="pt-20 scroll-mt-8">
+        {/* TASKS */}
+        <section
+          id="tasks"
+          className="pt-20 scroll-mt-8"
+        >
+
           <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 mb-5">
+
             <div>
-              <h2 className="text-2xl font-bold">Your Tasks</h2>
+
+              <h2 className="text-2xl font-bold">
+                Your Tasks
+              </h2>
 
               <p className="app-muted text-sm mt-1">
-                {filteredTasks.length} task(s) showing
+                {
+                  filteredTasks.length
+                }{" "}
+                task(s) showing
               </p>
+
             </div>
 
             <div className="flex flex-col md:flex-row gap-4">
+
               <button
-                onClick={() => setShowCreateModal(true)}
+                onClick={() =>
+                  setShowCreateModal(
+                    true
+                  )
+                }
                 className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-6 py-3 rounded-xl font-semibold hover:scale-[1.02] transition-all duration-300"
               >
                 + Create Task
@@ -206,54 +303,105 @@ export default function DashboardPage() {
                 placeholder="Search tasks..."
                 className="w-full md:w-auto p-3 sm:p-4 rounded-xl app-input outline-none focus:border-blue-500 transition-all duration-300 text-sm sm:text-base"
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) =>
+                  setSearch(
+                    e.target.value
+                  )
+                }
               />
 
               <select
                 className="w-full md:w-auto p-3 sm:p-4 rounded-xl app-input outline-none focus:border-blue-500 transition-all duration-300 text-sm sm:text-base"
-                value={filterPriority}
-                onChange={(e) => setFilterPriority(e.target.value)}
+                value={
+                  filterPriority
+                }
+                onChange={(e) =>
+                  setFilterPriority(
+                    e.target.value
+                  )
+                }
               >
-                <option value="All">All Priorities</option>
-                <option value="High">High</option>
-                <option value="Medium">Medium</option>
-                <option value="Low">Low</option>
+
+                <option value="All">
+                  All Priorities
+                </option>
+
+                <option value="High">
+                  High
+                </option>
+
+                <option value="Medium">
+                  Medium
+                </option>
+
+                <option value="Low">
+                  Low
+                </option>
+
               </select>
 
               <select
                 className="w-full md:w-auto p-3 sm:p-4 rounded-xl app-input outline-none focus:border-blue-500 transition-all duration-300 text-sm sm:text-base"
                 value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
+                onChange={(e) =>
+                  setSortBy(
+                    e.target.value
+                  )
+                }
               >
-                <option value="Newest">Newest</option>
-                <option value="Oldest">Oldest</option>
-                <option value="Due Date">Due Date</option>
+
+                <option value="Newest">
+                  Newest
+                </option>
+
+                <option value="Oldest">
+                  Oldest
+                </option>
+
+                <option value="Due Date">
+                  Due Date
+                </option>
+
               </select>
+
             </div>
+
           </div>
 
           <KanbanBoard
             tasks={filteredTasks}
             fetchTasks={fetchTasks}
           />
+
         </section>
 
+        {/* AI SECTION */}
         <section
           id="ai"
           className="pt-10 pb-10 scroll-mt-20"
         >
+
           <div className="max-w-6xl mx-auto">
             <AIChat tasks={tasks} />
           </div>
+
         </section>
 
+        {/* CREATE TASK MODAL */}
         {showCreateModal && (
           <CreateTaskModal
-            closeModal={() => setShowCreateModal(false)}
+            closeModal={() =>
+              setShowCreateModal(
+                false
+              )
+            }
             fetchTasks={fetchTasks}
           />
         )}
+
+        {/* FLOATING AI */}
         <FloatingAI tasks={tasks} />
+
       </motion.main>
     </div>
   );

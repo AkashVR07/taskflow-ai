@@ -156,16 +156,7 @@ export default function LoginPage() {
                 setEmail(e.target.value)
               }
               required
-              style={{
-                backgroundColor:
-                  "#ffffff",
-                color: "#000000",
-                WebkitTextFillColor:
-                  "#000000",
-                caretColor:
-                  "#000000",
-              }}
-              className="w-full p-4 rounded-2xl border border-white/20 outline-none focus:border-cyan-500 transition-all duration-300"
+              className="auth-input w-full p-4 rounded-2xl outline-none focus:border-cyan-500 transition-all duration-300"
             />
 
           </div>
@@ -193,16 +184,7 @@ export default function LoginPage() {
                   )
                 }
                 required
-                style={{
-                  backgroundColor:
-                    "#ffffff",
-                  color: "#000000",
-                  WebkitTextFillColor:
-                    "#000000",
-                  caretColor:
-                    "#000000",
-                }}
-                className="w-full p-4 pr-12 rounded-2xl border border-white/20 outline-none focus:border-cyan-500 transition-all duration-300"
+                className="auth-input w-full p-4 pr-12 rounded-2xl outline-none focus:border-cyan-500 transition-all duration-300"
               />
 
               <button
