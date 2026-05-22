@@ -209,7 +209,7 @@ export default function Navbar() {
                             "/profile"
                           )
                         }
-                        className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 transition-all duration-300 text-left"
+                        className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 transition-all duration-200 ease-out text-left"
                       >
                         <User size={18} />
                         Profile
@@ -221,7 +221,7 @@ export default function Navbar() {
                             "/settings"
                           )
                         }
-                        className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 transition-all duration-300 text-left"
+                        className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 transition-all duration-200 ease-out text-left"
                       >
                         <Settings size={18} />
                         Settings
@@ -229,7 +229,7 @@ export default function Navbar() {
 
                       <button
                         onClick={logoutHandler}
-                        className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-400 hover:bg-red-500/10 transition-all duration-300 text-left"
+                        className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-400 hover:bg-red-500/10 transition-all duration-200 ease-out text-left"
                       >
                         <LogOut size={18} />
                         Logout
