@@ -81,14 +81,12 @@ export default function RegisterPage() {
       );
 
       setTimeout(() => {
-  setTimeout(() => {
-  router.push("/dashboard");
-}, 1500);
-}, 1500);
+        router.push("/dashboard");
+      }, 1500);
+
     } catch (error: any) {
       toast.error(
-        error?.response?.data
-          ?.message ||
+        error?.response?.data?.message ||
           "Registration Failed"
       );
     } finally {
@@ -111,6 +109,7 @@ export default function RegisterPage() {
         onSubmit={submitHandler}
         className="relative z-10 w-full max-w-md p-8 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.37)]"
       >
+
         {/* Title */}
         <div className="text-center mb-6">
           <h1 className="text-4xl font-extrabold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">
@@ -237,7 +236,7 @@ export default function RegisterPage() {
 
           {/* Confirm Password */}
           <div>
-            <label className="auth-input w-full p-4 pr-12 rounded-2xl outline-none transition-all duration-300">
+            <label className="block mb-2 font-medium text-white">
               Confirm Password
             </label>
 
@@ -249,7 +248,7 @@ export default function RegisterPage() {
                     : "password"
                 }
                 placeholder="Confirm your password"
-                className="w-full p-4 pr-12 rounded-2xl bg-black/40 border border-white/10 text-white placeholder:text-gray-400 outline-none focus:border-cyan-500 transition-all duration-300"
+                className="auth-input w-full p-4 pr-12 rounded-2xl outline-none transition-all duration-300"
                 value={confirmPassword}
                 onChange={(e) =>
                   setConfirmPassword(
@@ -277,7 +276,7 @@ export default function RegisterPage() {
             </div>
           </div>
 
-          {/* Password Match Indicator */}
+          {/* Password Match */}
           {confirmPassword && (
             <p
               className={`text-sm ${
@@ -294,7 +293,7 @@ export default function RegisterPage() {
             </p>
           )}
 
-          {/* Register Button */}
+          {/* Submit */}
           <button
             type="submit"
             disabled={loading}
@@ -312,7 +311,7 @@ export default function RegisterPage() {
               : "Register"}
           </button>
 
-          {/* Login Link */}
+          {/* Login */}
           <div className="mt-6 flex items-center justify-center gap-2 text-sm">
             <span className="text-gray-300">
               Already have an account?
