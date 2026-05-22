@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   BarChart3,
@@ -8,6 +9,7 @@ import {
   Bot,
   Menu,
   X,
+  LogOut,
 } from "lucide-react";
 
 const menuItems = [
@@ -18,8 +20,19 @@ const menuItems = [
 ];
 
 export default function Sidebar() {
+  const router = useRouter();
+
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("dashboard");
+
+  const logoutHandler = () => {
+    localStorage.removeItem("userInfo");
+
+    document.cookie =
+      "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+
+    router.push("/login");
+  };
 
   const scrollToSection = (id: string) => {
     const section = document.getElementById(id);
@@ -53,7 +66,10 @@ export default function Sidebar() {
         const top = section.offsetTop;
         const bottom = top + section.offsetHeight;
 
-        if (scrollPosition >= top && scrollPosition < bottom) {
+        if (
+          scrollPosition >= top &&
+          scrollPosition < bottom
+        ) {
           setActive(item.id);
           break;
         }
@@ -64,12 +80,14 @@ export default function Sidebar() {
     handleScroll();
 
     return () =>
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener(
+        "scroll",
+        handleScroll
+      );
   }, []);
 
   return (
     <>
-      {/* MOBILE MENU BUTTON */}
       {!open && (
         <button
           type="button"
@@ -80,7 +98,6 @@ export default function Sidebar() {
         </button>
       )}
 
-      {/* MOBILE OVERLAY */}
       {open && (
         <div
           onClick={() => setOpen(false)}
@@ -88,7 +105,6 @@ export default function Sidebar() {
         />
       )}
 
-      {/* SIDEBAR */}
       <aside
         className={`fixed top-0 left-0 min-h-screen h-full w-72 app-card p-6 z-[999] shadow-2xl transition-transform duration-300 shrink-0 ${
           open
@@ -125,7 +141,9 @@ export default function Sidebar() {
               <button
                 type="button"
                 key={item.id}
-                onClick={() => scrollToSection(item.id)}
+                onClick={() =>
+                  scrollToSection(item.id)
+                }
                 className={`w-full flex items-center gap-3 text-left px-4 py-3 rounded-xl font-semibold transition-all duration-300 ${
                   isActive
                     ? "bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg"
@@ -139,7 +157,7 @@ export default function Sidebar() {
           })}
         </div>
 
-        <div className="absolute bottom-6 left-6 right-6">
+        <div className="absolute bottom-6 left-6 right-6 space-y-4">
           <div className="bg-gradient-to-br from-cyan-500/15 via-blue-500/10 to-purple-500/15 border border-cyan-500/20 p-5 rounded-2xl shadow-lg">
             <p className="font-semibold text-lg">
               Productivity Boost
@@ -149,6 +167,15 @@ export default function Sidebar() {
               Organize smarter with AI-driven task insights.
             </p>
           </div>
+
+          <button
+            type="button"
+            onClick={logoutHandler}
+            className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-red-500 to-pink-500 text-white font-semibold shadow-lg hover:scale-[1.02] transition-all duration-300"
+          >
+            <LogOut size={20} />
+            Logout
+          </button>
         </div>
       </aside>
     </>

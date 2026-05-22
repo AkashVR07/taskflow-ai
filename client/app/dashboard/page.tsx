@@ -39,25 +39,31 @@ export default function DashboardPage() {
     if (!userInfo?.token) return;
 
     try {
-      const { data } = await axios.get("`${process.env.NEXT_PUBLIC_API_URL}/api/tasks`/api/tasks", {
-        headers: {
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-      });
+      const { data } = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/tasks`,
+        {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
 
       setTasks(data);
     } catch (error) {
       console.log(error);
+      toast.error("Failed to fetch tasks");
     }
   };
 
   const filteredTasks = tasks.filter((task) => {
     const matchesSearch = task.title
-      .toLowerCase()
+      ?.toLowerCase()
       .includes(search.toLowerCase());
 
     const matchesPriority =
-      filterPriority === "All" ? true : task.priority === filterPriority;
+      filterPriority === "All"
+        ? true
+        : task.priority === filterPriority;
 
     return matchesSearch && matchesPriority;
   });
@@ -74,7 +80,7 @@ export default function DashboardPage() {
       setLoading(true);
 
       await axios.post(
-        "`${process.env.NEXT_PUBLIC_API_URL}/api/tasks`/api/tasks",
+        `${process.env.NEXT_PUBLIC_API_URL}/api/tasks`,
         {
           title,
           description,
@@ -105,12 +111,14 @@ export default function DashboardPage() {
   };
 
   const getAISuggestions = async () => {
+    if (!userInfo?.token) return;
+
     try {
       setAiLoading(true);
       setAiSuggestion("");
 
       const { data } = await axios.post(
-        "`${process.env.NEXT_PUBLIC_API_URL}/api/tasks`/api/ai/suggestions",
+        `${process.env.NEXT_PUBLIC_API_URL}/api/ai/suggestions`,
         { tasks },
         {
           headers: {
@@ -160,25 +168,54 @@ export default function DashboardPage() {
       >
         <Navbar />
 
-        {/* DASHBOARD SECTION */}
         <section id="dashboard" className="pt-6 scroll-mt-8">
-          <UserProfileCard user={userInfo} tasks={tasks} />
+          <UserProfileCard
+            user={userInfo}
+            tasks={tasks}
+          />
 
-          <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 mt-6">
-            <DashboardCard title="Total Tasks" value={tasks.length.toString()} />
+          <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6 mt-6">
+            <DashboardCard
+              title="Total Tasks"
+              value={tasks.length.toString()}
+              icon="📋"
+              gradient="from-cyan-500 to-blue-500"
+            />
 
             <DashboardCard
               title="Completed"
               value={tasks
-                .filter((task) => task.status === "Completed")
+                .filter(
+                  (task) =>
+                    task.status === "Completed"
+                )
                 .length.toString()}
+              icon="✅"
+              gradient="from-green-500 to-emerald-500"
             />
 
             <DashboardCard
               title="Pending"
               value={tasks
-                .filter((task) => task.status === "Pending")
+                .filter(
+                  (task) =>
+                    task.status === "Pending"
+                )
                 .length.toString()}
+              icon="⏳"
+              gradient="from-yellow-500 to-orange-500"
+            />
+
+            <DashboardCard
+              title="High Priority"
+              value={tasks
+                .filter(
+                  (task) =>
+                    task.priority === "High"
+                )
+                .length.toString()}
+              icon="🔥"
+              gradient="from-pink-500 to-red-500"
             />
           </section>
 
@@ -190,16 +227,16 @@ export default function DashboardPage() {
           </section>
         </section>
 
-        {/* ANALYTICS SECTION */}
         <section id="analytics" className="pt-20 scroll-mt-8">
           <AnalyticsChart tasks={tasks} />
         </section>
 
-        {/* TASKS SECTION */}
         <section id="tasks" className="pt-20 scroll-mt-8">
           <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 mb-5">
             <div>
-              <h2 className="text-2xl font-bold">Your Tasks</h2>
+              <h2 className="text-2xl font-bold">
+                Your Tasks
+              </h2>
 
               <p className="app-muted text-sm mt-1">
                 {filteredTasks.length} task(s) showing
@@ -212,27 +249,46 @@ export default function DashboardPage() {
                 placeholder="Search tasks..."
                 className="w-full md:w-auto p-3 sm:p-4 rounded-xl app-input outline-none focus:border-blue-500 transition-all duration-300 text-sm sm:text-base"
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) =>
+                  setSearch(e.target.value)
+                }
               />
 
               <select
                 className="w-full md:w-auto p-3 sm:p-4 rounded-xl app-input outline-none focus:border-blue-500 transition-all duration-300 text-sm sm:text-base"
                 value={filterPriority}
-                onChange={(e) => setFilterPriority(e.target.value)}
+                onChange={(e) =>
+                  setFilterPriority(
+                    e.target.value
+                  )
+                }
               >
-                <option value="All">All Priorities</option>
-                <option value="High">High</option>
-                <option value="Medium">Medium</option>
-                <option value="Low">Low</option>
+                <option value="All">
+                  All Priorities
+                </option>
+                <option value="High">
+                  High
+                </option>
+                <option value="Medium">
+                  Medium
+                </option>
+                <option value="Low">
+                  Low
+                </option>
               </select>
             </div>
           </div>
 
-          <KanbanBoard tasks={filteredTasks} fetchTasks={fetchTasks} />
+          <KanbanBoard
+            tasks={filteredTasks}
+            fetchTasks={fetchTasks}
+          />
         </section>
 
-        {/* AI SECTION */}
-        <section id="ai" className="pt-20 pb-20 scroll-mt-8">
+        <section
+          id="ai"
+          className="pt-20 pb-20 scroll-mt-8"
+        >
           <section className="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6">
             <form
               onSubmit={createTask}
@@ -247,38 +303,56 @@ export default function DashboardPage() {
                 placeholder="Task Title"
                 className="w-full p-3 sm:p-4 rounded-xl app-input outline-none text-sm sm:text-base"
                 value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={(e) =>
+                  setTitle(e.target.value)
+                }
               />
 
               <textarea
                 placeholder="Task Description"
                 className="w-full p-3 sm:p-4 rounded-xl app-input outline-none mt-4 min-h-[120px] text-sm sm:text-base"
                 value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                onChange={(e) =>
+                  setDescription(
+                    e.target.value
+                  )
+                }
               />
 
               <select
                 className="w-full p-3 sm:p-4 rounded-xl app-input outline-none mt-4 text-sm sm:text-base"
                 value={priority}
-                onChange={(e) => setPriority(e.target.value)}
+                onChange={(e) =>
+                  setPriority(e.target.value)
+                }
               >
-                <option value="High">High Priority</option>
-                <option value="Medium">Medium Priority</option>
-                <option value="Low">Low Priority</option>
+                <option value="High">
+                  High Priority
+                </option>
+                <option value="Medium">
+                  Medium Priority
+                </option>
+                <option value="Low">
+                  Low Priority
+                </option>
               </select>
 
               <input
                 type="date"
                 className="w-full p-3 sm:p-4 rounded-xl app-input outline-none mt-4 text-sm sm:text-base"
                 value={dueDate}
-                onChange={(e) => setDueDate(e.target.value)}
+                onChange={(e) =>
+                  setDueDate(e.target.value)
+                }
               />
 
               <button
                 disabled={loading}
                 className="w-full bg-white text-black px-6 py-3 sm:py-4 rounded-xl font-semibold mt-4 hover:bg-zinc-200 transition text-sm sm:text-base disabled:opacity-50"
               >
-                {loading ? "Creating..." : "Create Task"}
+                {loading
+                  ? "Creating..."
+                  : "Create Task"}
               </button>
             </form>
 
@@ -299,7 +373,9 @@ export default function DashboardPage() {
                   disabled={aiLoading}
                   className="w-full md:w-auto bg-white text-black px-5 py-3 rounded-xl font-semibold hover:bg-zinc-200 transition text-sm sm:text-base disabled:opacity-50"
                 >
-                  {aiLoading ? "Generating..." : "Generate Suggestions"}
+                  {aiLoading
+                    ? "Generating..."
+                    : "Generate Suggestions"}
                 </button>
               </div>
 
@@ -314,7 +390,8 @@ export default function DashboardPage() {
                   </p>
                 ) : (
                   <p className="app-muted text-sm sm:text-base">
-                    Click Generate Suggestions to view productivity insights.
+                    Click Generate Suggestions to view
+                    productivity insights.
                   </p>
                 )}
               </div>

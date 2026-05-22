@@ -4,6 +4,8 @@ import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { Toaster } from "react-hot-toast";
 
+import { AuthProvider } from "@/context/AuthContext";
+
 export const metadata: Metadata = {
   title: "TaskFlow AI",
   description:
@@ -28,14 +30,17 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body>
         <ThemeProvider>
-          <Toaster
-            position="top-right"
-            toastOptions={{
+          <AuthProvider>
+            <Toaster
+              position="top-right"
+              toastOptions={{
               duration: 1800,
             }}
           />
+
           {children}
-        </ThemeProvider>
+        </AuthProvider>
+      </ThemeProvider>
       </body>
     </html>
   );
