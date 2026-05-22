@@ -19,6 +19,7 @@ import NotificationCenter from "@/components/NotificationCenter";
 import CreateTaskModal from "@/components/CreateTaskModal";
 import ProgressRing from "@/components/ProgressRing";
 import AIChat from "@/components/AIChat";
+import FloatingAI from "@/components/FloatingAI";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -252,6 +253,7 @@ export default function DashboardPage() {
             fetchTasks={fetchTasks}
           />
         )}
+        <FloatingAI tasks={tasks} />
       </motion.main>
     </div>
   );
