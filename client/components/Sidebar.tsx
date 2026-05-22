@@ -74,7 +74,7 @@ export default function Sidebar() {
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition =
-        window.scrollY + 220;
+        window.scrollY + window.innerHeight / 2;
 
       for (const item of menuItems) {
         const section =
