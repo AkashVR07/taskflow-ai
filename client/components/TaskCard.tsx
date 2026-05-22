@@ -37,10 +37,15 @@ export default function TaskCard({
     useState(false);
 
   const updateStatus = async () => {
+    const newStatus =
+      status === "Completed"
+        ? "Pending"
+        : "Completed";
+
     try {
       await axios.put(
-         `${process.env.NEXT_PUBLIC_API_URL}/api/tasks/${id}`,
-        {},
+        `${process.env.NEXT_PUBLIC_API_URL}/api/tasks/${id}`,
+        { status: newStatus },
         {
           headers: {
             Authorization: `Bearer ${userInfo.token}`,
@@ -51,9 +56,10 @@ export default function TaskCard({
       fetchTasks();
 
       toast.dismiss();
-      toast.success("Task status updated");
+      toast.success(`Task moved to ${newStatus}`);
     } catch (error) {
       console.log(error);
+      toast.error("Failed to update status");
     }
   };
 
@@ -74,6 +80,7 @@ export default function TaskCard({
       toast.success("Task deleted");
     } catch (error) {
       console.log(error);
+      toast.error("Failed to delete task");
     }
   };
 
@@ -104,7 +111,6 @@ export default function TaskCard({
         }}
         className="app-card p-4 sm:p-6 rounded-2xl shadow-lg hover:shadow-2xl hover:border-blue-500/40 transition-all duration-300 backdrop-blur-md overflow-hidden"
       >
-        {/* TOP */}
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
           <h2 className="text-xl sm:text-2xl font-bold break-words leading-snug">
             {title}
@@ -121,12 +127,10 @@ export default function TaskCard({
           </span>
         </div>
 
-        {/* DESCRIPTION */}
         <p className="app-muted mt-5 leading-relaxed text-sm sm:text-[15px] break-words">
           {description}
         </p>
 
-        {/* BADGES */}
         <div className="flex flex-wrap gap-3 mt-6">
           <span
             className={`px-4 py-2 rounded-full text-xs sm:text-sm font-medium shadow-sm ${priorityColor}`}
@@ -141,7 +145,6 @@ export default function TaskCard({
           )}
         </div>
 
-        {/* MODAL */}
         {showModal && (
           <EditTaskModal
             task={{
@@ -158,7 +161,6 @@ export default function TaskCard({
           />
         )}
 
-        {/* BUTTONS */}
         <div className="flex flex-col sm:flex-row flex-wrap gap-3 mt-8">
           <button
             onClick={updateStatus}
