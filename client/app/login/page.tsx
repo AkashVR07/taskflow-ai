@@ -77,7 +77,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#06121f] via-[#0b1f35] to-[#071018] flex items-center justify-center px-4 py-10 relative overflow-hidden">
 
-      {/* Success Animation */}
+      {/* SUCCESS EFFECT */}
       {success && (
         <div className="fixed inset-0 z-[9999] flex pointer-events-none">
 
@@ -104,12 +104,12 @@ export default function LoginPage() {
         </div>
       )}
 
-      {/* Glow Effects */}
+      {/* BACKGROUND GLOW */}
       <div className="absolute w-72 h-72 bg-cyan-500/20 blur-3xl rounded-full top-10 left-10"></div>
 
       <div className="absolute w-72 h-72 bg-blue-500/20 blur-3xl rounded-full bottom-10 right-10"></div>
 
-      {/* Form */}
+      {/* LOGIN CARD */}
       <motion.form
         initial={{
           opacity: 0,
@@ -126,7 +126,7 @@ export default function LoginPage() {
         className="relative z-10 w-full max-w-md p-8 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.37)]"
       >
 
-        {/* Header */}
+        {/* HEADER */}
         <div className="text-center mb-6">
 
           <h1 className="text-4xl font-extrabold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">
@@ -141,7 +141,7 @@ export default function LoginPage() {
 
         <div className="space-y-5">
 
-          {/* Email */}
+          {/* EMAIL */}
           <div>
 
             <label className="block mb-2 font-medium text-white">
@@ -151,17 +151,26 @@ export default function LoginPage() {
             <input
               type="email"
               placeholder="Enter your email"
-              className="auth-input w-full p-4 rounded-2xl outline-none transition-all duration-300"
               value={email}
               onChange={(e) =>
                 setEmail(e.target.value)
               }
               required
+              style={{
+                backgroundColor:
+                  "#ffffff",
+                color: "#000000",
+                WebkitTextFillColor:
+                  "#000000",
+                caretColor:
+                  "#000000",
+              }}
+              className="w-full p-4 rounded-2xl border border-white/20 outline-none focus:border-cyan-500 transition-all duration-300"
             />
 
           </div>
 
-          {/* Password */}
+          {/* PASSWORD */}
           <div>
 
             <label className="block mb-2 font-medium text-white">
@@ -177,7 +186,6 @@ export default function LoginPage() {
                     : "password"
                 }
                 placeholder="Enter your password"
-                className="auth-input w-full p-4 pr-12 rounded-2xl outline-none transition-all duration-300"
                 value={password}
                 onChange={(e) =>
                   setPassword(
@@ -185,6 +193,16 @@ export default function LoginPage() {
                   )
                 }
                 required
+                style={{
+                  backgroundColor:
+                    "#ffffff",
+                  color: "#000000",
+                  WebkitTextFillColor:
+                    "#000000",
+                  caretColor:
+                    "#000000",
+                }}
+                className="w-full p-4 pr-12 rounded-2xl border border-white/20 outline-none focus:border-cyan-500 transition-all duration-300"
               />
 
               <button
@@ -207,7 +225,7 @@ export default function LoginPage() {
 
           </div>
 
-          {/* Remember */}
+          {/* OPTIONS */}
           <div className="flex items-center justify-between text-sm">
 
             <label className="flex items-center gap-2 cursor-pointer">
@@ -232,7 +250,7 @@ export default function LoginPage() {
 
           </div>
 
-          {/* Submit */}
+          {/* LOGIN BUTTON */}
           <button
             type="submit"
             disabled={
@@ -256,11 +274,12 @@ export default function LoginPage() {
 
           </button>
 
-          {/* Register */}
+          {/* REGISTER */}
           <div className="mt-6 flex items-center justify-center gap-2 text-sm">
 
             <span className="text-gray-300">
-              Don&apos;t have an account?
+              Don&apos;t have an
+              account?
             </span>
 
             <button
