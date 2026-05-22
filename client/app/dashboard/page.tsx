@@ -237,8 +237,13 @@ export default function DashboardPage() {
           />
         </section>
 
-        <section id="ai" className="pt-20 pb-20 scroll-mt-24">
-          <AIChat tasks={tasks} />
+        <section
+          id="ai"
+          className="pt-10 pb-10 scroll-mt-20"
+        >
+          <div className="max-w-6xl mx-auto">
+            <AIChat tasks={tasks} />
+          </div>
         </section>
 
         {showCreateModal && (
