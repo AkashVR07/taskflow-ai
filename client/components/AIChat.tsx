@@ -161,7 +161,7 @@ export default function AIChat({ tasks }: Props) {
               sendMessage();
             }
           }}
-          className="flex-1 p-4 rounded-2xl app-input outline-none"
+          className="flex-1 p-4 rounded-2xl app-input outline-none focus:outline-none focus:ring-0"
         />
 
         <button
