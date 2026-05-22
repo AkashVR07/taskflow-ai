@@ -65,36 +65,6 @@ export default function UserProfileCard({ user, tasks }: Props) {
           />
         </div>
       </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mt-8">
-        <div className="bg-gradient-to-br from-purple-500/10 via-pink-500/5 to-zinc-900/20 border border-purple-500/20 p-4 rounded-xl transition-all duration-500 shadow-md hover:shadow-xl hover:scale-[1.02]">
-          <p className="app-muted text-sm">Total</p>
-          <h3 className="text-2xl font-bold mt-2">
-            <CountUp end={tasks.length} duration={1.5} />
-          </h3>
-        </div>
-
-        <div className="bg-gradient-to-br from-green-500/15 to-green-500/5 border border-green-500/30 p-4 rounded-xl transition-all duration-500 shadow-md hover:shadow-xl hover:scale-[1.02]">
-          <p className="app-muted text-sm">Completed</p>
-          <h3 className="text-2xl font-extrabold mt-2 text-green-500 drop-shadow-[0_0_8px_rgba(34,197,94,0.5)]">
-            <CountUp end={completedTasks} duration={1.5} />
-          </h3>
-        </div>
-
-        <div className="bg-gradient-to-br from-yellow-500/15 to-yellow-500/5 border border-yellow-500/30 p-4 rounded-xl transition-all duration-500 shadow-md hover:shadow-xl hover:scale-[1.02]">
-          <p className="app-muted text-sm">Pending</p>
-          <h3 className="text-2xl font-extrabold mt-2 text-yellow-500 drop-shadow-[0_0_8px_rgba(234,179,8,0.5)]">
-            <CountUp end={pendingTasks} duration={1.5} />
-          </h3>
-        </div>
-
-        <div className="bg-gradient-to-br from-sky-500/15 to-sky-500/5 border border-sky-500/30 p-4 rounded-xl transition-all duration-500 shadow-md hover:shadow-xl hover:scale-[1.02]">
-          <p className="app-muted text-sm">Productivity</p>
-          <h3 className="text-2xl font-extrabold mt-2 text-sky-500 drop-shadow-[0_0_8px_rgba(14,165,233,0.5)]">
-            <CountUp end={progress} duration={1.5} />%
-          </h3>
-        </div>
-      </div>
     </motion.div>
   );
 }
