@@ -18,6 +18,7 @@ import KanbanBoard from "@/components/KanbanBoard";
 import NotificationCenter from "@/components/NotificationCenter";
 import CreateTaskModal from "@/components/CreateTaskModal";
 import ProgressRing from "@/components/ProgressRing";
+import AIChat from "@/components/AIChat";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -25,15 +26,10 @@ export default function DashboardPage() {
   const [tasks, setTasks] = useState<any[]>([]);
   const [userInfo, setUserInfo] = useState<any>(null);
 
-  const [aiSuggestion, setAiSuggestion] = useState("");
-  const [aiLoading, setAiLoading] = useState(false);
-
-  const [showCreateModal, setShowCreateModal] =
-    useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   const [search, setSearch] = useState("");
-  const [filterPriority, setFilterPriority] =
-    useState("All");
+  const [filterPriority, setFilterPriority] = useState("All");
   const [sortBy, setSortBy] = useState("Newest");
 
   const fetchTasks = async () => {
@@ -94,38 +90,8 @@ export default function DashboardPage() {
       return 0;
     });
 
-  const getAISuggestions = async () => {
-    if (!userInfo?.token) return;
-
-    try {
-      setAiLoading(true);
-      setAiSuggestion("");
-
-      const { data } = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/ai/suggestions`,
-        { tasks },
-        {
-          headers: {
-            Authorization: `Bearer ${userInfo.token}`,
-          },
-        }
-      );
-
-      setTimeout(() => {
-        setAiSuggestion(data.suggestion);
-        setAiLoading(false);
-        toast.success("AI suggestions generated");
-      }, 1500);
-    } catch (error) {
-      console.log(error);
-      setAiLoading(false);
-      toast.error("Failed to generate suggestions");
-    }
-  };
-
   useEffect(() => {
-    const storedUser =
-      localStorage.getItem("userInfo");
+    const storedUser = localStorage.getItem("userInfo");
 
     if (!storedUser) {
       router.push("/login");
@@ -153,14 +119,8 @@ export default function DashboardPage() {
       >
         <Navbar />
 
-        <section
-          id="dashboard"
-          className="pt-6 scroll-mt-8"
-        >
-          <UserProfileCard
-            user={userInfo}
-            tasks={tasks}
-          />
+        <section id="dashboard" className="pt-6 scroll-mt-8">
+          <UserProfileCard user={userInfo} tasks={tasks} />
 
           <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6 mt-6">
             <DashboardCard
@@ -173,10 +133,7 @@ export default function DashboardPage() {
             <DashboardCard
               title="Completed"
               value={tasks
-                .filter(
-                  (task) =>
-                    task.status === "Completed"
-                )
+                .filter((task) => task.status === "Completed")
                 .length.toString()}
               icon="✅"
               gradient="from-green-500 to-emerald-500"
@@ -185,10 +142,7 @@ export default function DashboardPage() {
             <DashboardCard
               title="Pending"
               value={tasks
-                .filter(
-                  (task) =>
-                    task.status === "Pending"
-                )
+                .filter((task) => task.status === "Pending")
                 .length.toString()}
               icon="⏳"
               gradient="from-yellow-500 to-orange-500"
@@ -197,10 +151,7 @@ export default function DashboardPage() {
             <DashboardCard
               title="High Priority"
               value={tasks
-                .filter(
-                  (task) =>
-                    task.priority === "High"
-                )
+                .filter((task) => task.priority === "High")
                 .length.toString()}
               icon="🔥"
               gradient="from-pink-500 to-red-500"
@@ -209,21 +160,17 @@ export default function DashboardPage() {
 
           <NotificationCenter tasks={tasks} />
 
-          <div className="mt-8">
+          <section className="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6 mt-8">
             <ActivityFeed tasks={tasks} />
 
-            <div className="mt-8">
-              <ProgressRing
-                completed={
-                  tasks.filter(
-                    (task) =>
-                      task.status === "Completed"
-                  ).length
-                }
+            <ProgressRing
+              completed={
+                tasks.filter((task) => task.status === "Completed")
+                  .length
+              }
               total={tasks.length}
             />
-          </div>
-          </div>
+          </section>
 
           <section className="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6 mt-8">
             <ActivityTimeline tasks={tasks} />
@@ -231,22 +178,14 @@ export default function DashboardPage() {
           </section>
         </section>
 
-        <section
-          id="analytics"
-          className="pt-20 scroll-mt-8"
-        >
+        <section id="analytics" className="pt-20 scroll-mt-8">
           <AnalyticsChart tasks={tasks} />
         </section>
 
-        <section
-          id="tasks"
-          className="pt-20 scroll-mt-8"
-        >
+        <section id="tasks" className="pt-20 scroll-mt-8">
           <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 mb-5">
             <div>
-              <h2 className="text-2xl font-bold">
-                Your Tasks
-              </h2>
+              <h2 className="text-2xl font-bold">Your Tasks</h2>
 
               <p className="app-muted text-sm mt-1">
                 {filteredTasks.length} task(s) showing
@@ -255,9 +194,7 @@ export default function DashboardPage() {
 
             <div className="flex flex-col md:flex-row gap-4">
               <button
-                onClick={() =>
-                  setShowCreateModal(true)
-                }
+                onClick={() => setShowCreateModal(true)}
                 className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-6 py-3 rounded-xl font-semibold hover:scale-[1.02] transition-all duration-300"
               >
                 + Create Task
@@ -268,50 +205,28 @@ export default function DashboardPage() {
                 placeholder="Search tasks..."
                 className="w-full md:w-auto p-3 sm:p-4 rounded-xl app-input outline-none focus:border-blue-500 transition-all duration-300 text-sm sm:text-base"
                 value={search}
-                onChange={(e) =>
-                  setSearch(e.target.value)
-                }
+                onChange={(e) => setSearch(e.target.value)}
               />
 
               <select
                 className="w-full md:w-auto p-3 sm:p-4 rounded-xl app-input outline-none focus:border-blue-500 transition-all duration-300 text-sm sm:text-base"
                 value={filterPriority}
-                onChange={(e) =>
-                  setFilterPriority(
-                    e.target.value
-                  )
-                }
+                onChange={(e) => setFilterPriority(e.target.value)}
               >
-                <option value="All">
-                  All Priorities
-                </option>
-                <option value="High">
-                  High
-                </option>
-                <option value="Medium">
-                  Medium
-                </option>
-                <option value="Low">
-                  Low
-                </option>
+                <option value="All">All Priorities</option>
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
               </select>
 
               <select
                 className="w-full md:w-auto p-3 sm:p-4 rounded-xl app-input outline-none focus:border-blue-500 transition-all duration-300 text-sm sm:text-base"
                 value={sortBy}
-                onChange={(e) =>
-                  setSortBy(e.target.value)
-                }
+                onChange={(e) => setSortBy(e.target.value)}
               >
-                <option value="Newest">
-                  Newest
-                </option>
-                <option value="Oldest">
-                  Oldest
-                </option>
-                <option value="Due Date">
-                  Due Date
-                </option>
+                <option value="Newest">Newest</option>
+                <option value="Oldest">Oldest</option>
+                <option value="Due Date">Due Date</option>
               </select>
             </div>
           </div>
@@ -322,58 +237,13 @@ export default function DashboardPage() {
           />
         </section>
 
-        <section
-          id="ai"
-          className="pt-24 pb-28 scroll-mt-28"
-        >
-          <div className="app-card p-4 sm:p-6 rounded-2xl shadow-xl">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-              <div>
-                <h2 className="text-xl sm:text-2xl font-bold">
-                  AI Productivity Assistant
-                </h2>
-
-                <p className="app-muted mt-1 text-sm sm:text-base">
-                  Get smart suggestions based on your
-                  current tasks.
-                </p>
-              </div>
-
-              <button
-                onClick={getAISuggestions}
-                disabled={aiLoading}
-                className="w-full md:w-auto bg-white text-black px-5 py-3 rounded-xl font-semibold hover:bg-zinc-200 transition text-sm sm:text-base disabled:opacity-50"
-              >
-                {aiLoading
-                  ? "Generating..."
-                  : "Generate Suggestions"}
-              </button>
-            </div>
-
-            <div className="mt-6 app-soft rounded-xl p-4 sm:p-5 min-h-[120px]">
-              {aiLoading ? (
-                <p className="app-muted animate-pulse text-sm sm:text-base">
-                  AI is analyzing your tasks...
-                </p>
-              ) : aiSuggestion ? (
-                <p className="app-muted whitespace-pre-line leading-relaxed text-sm sm:text-base">
-                  {aiSuggestion}
-                </p>
-              ) : (
-                <p className="app-muted text-sm sm:text-base">
-                  Click Generate Suggestions to view
-                  productivity insights.
-                </p>
-              )}
-            </div>
-          </div>
+        <section id="ai" className="pt-24 pb-28 scroll-mt-28">
+          <AIChat tasks={tasks} />
         </section>
 
         {showCreateModal && (
           <CreateTaskModal
-            closeModal={() =>
-              setShowCreateModal(false)
-            }
+            closeModal={() => setShowCreateModal(false)}
             fetchTasks={fetchTasks}
           />
         )}
