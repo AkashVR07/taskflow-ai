@@ -154,8 +154,8 @@ export default function AIChat({ tasks }: Props) {
   };
 
   return (
-    <div className="app-card rounded-3xl border border-white/10 shadow-2xl overflow-hidden max-w-full">
-      <div className="bg-gradient-to-r from-cyan-500/15 via-blue-500/10 to-purple-500/15 border-b border-white/10 p-5 sm:p-6">
+    <div className="app-card rounded-3xl border border-white/10 shadow-2xl overflow-hidden max-w-full h-fit">
+      <div className="bg-gradient-to-r from-cyan-500/15 via-blue-500/10 to-purple-500/15 border-b border-white/10 p-4 sm:p-5">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center text-white shadow-lg">
@@ -163,7 +163,7 @@ export default function AIChat({ tasks }: Props) {
             </div>
 
             <div>
-              <h2 className="text-2xl sm:text-3xl font-extrabold">
+              <h2 className="text-xl sm:text-2xl font-extrabold">
                 AI Productivity Assistant
               </h2>
 
@@ -202,7 +202,7 @@ export default function AIChat({ tasks }: Props) {
         </div>
       </div>
 
-      <div className="max-h-[420px] min-h-[320px] overflow-y-auto p-5 sm:p-6 space-y-5 scroll-smooth">
+      <div className="h-[320px] overflow-y-auto p-4 sm:p-5 space-y-4 scroll-smooth">
         {messages.map((message, index) => (
           <div
             key={index}
