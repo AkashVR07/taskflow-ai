@@ -54,7 +54,7 @@ export default function Sidebar() {
 
     if (!section) return;
 
-    const yOffset = -20;
+    const yOffset = -90;
 
     const y =
       section.getBoundingClientRect()

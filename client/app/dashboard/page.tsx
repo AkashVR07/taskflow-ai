@@ -324,7 +324,7 @@ export default function DashboardPage() {
 
         <section
           id="ai"
-          className="pt-20 pb-20 scroll-mt-8"
+          className="pt-24 pb-28 scroll-mt-28"
         >
           <div className="app-card p-4 sm:p-6 rounded-2xl shadow-xl">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
