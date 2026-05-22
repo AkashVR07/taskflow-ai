@@ -1,35 +1,61 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { Bot, Send, User } from "lucide-react";
+import {
+  Bot,
+  Send,
+  User,
+  Sparkles,
+  Trash2,
+} from "lucide-react";
 
 type Props = {
   tasks: any[];
+};
+
+type Message = {
+  role: "user" | "assistant";
+  content: string;
 };
 
 export default function AIChat({ tasks }: Props) {
   const [prompt, setPrompt] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const [messages, setMessages] = useState<any[]>([
+  const chatEndRef = useRef<HTMLDivElement | null>(null);
+
+  const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
       content:
-        "Hello 👋 I am your AI productivity assistant. Ask me anything about your tasks.",
+        "Hello 👋 I’m your AI productivity assistant. Ask me about priorities, overdue tasks, planning, or how to complete your work faster.",
     },
   ]);
 
-  const sendMessage = async () => {
-    if (!prompt.trim() || loading) return;
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({
+      behavior: "smooth",
+    });
+  }, [messages, loading]);
 
-    const currentPrompt = prompt;
+  const quickPrompts = [
+    "What should I do first today?",
+    "Summarize my pending tasks",
+    "Which task is highest priority?",
+    "Create a work plan for today",
+  ];
+
+  const sendMessage = async (customPrompt?: string) => {
+    const finalPrompt = customPrompt || prompt;
+
+    if (!finalPrompt.trim() || loading) return;
 
     setMessages((prev) => [
       ...prev,
       {
         role: "user",
-        content: currentPrompt,
+        content: finalPrompt,
       },
     ]);
 
@@ -41,15 +67,10 @@ export default function AIChat({ tasks }: Props) {
         localStorage.getItem("userInfo") || "{}"
       );
 
-    console.log(
-  "AI API URL:",
-  `${process.env.NEXT_PUBLIC_API_URL}/api/ai/chat`
-);
-
       const { data } = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/api/ai/chat`,
         {
-          prompt: currentPrompt,
+          prompt: finalPrompt,
           tasks,
         },
         {
@@ -69,11 +90,9 @@ export default function AIChat({ tasks }: Props) {
         },
       ]);
     } catch (error: any) {
-      console.log(error);
-
       const errorMessage =
         error?.response?.data?.message ||
-        "AI backend error. Check server terminal.";
+        "AI backend error. Please check server terminal.";
 
       setMessages((prev) => [
         ...prev,
@@ -87,90 +106,138 @@ export default function AIChat({ tasks }: Props) {
     }
   };
 
+  const clearChat = () => {
+    setMessages([
+      {
+        role: "assistant",
+        content:
+          "Chat cleared ✅ Ask me anything about your tasks.",
+      },
+    ]);
+  };
+
   return (
-    <div className="app-card rounded-3xl p-6 border border-white/10 shadow-xl">
-      <div className="flex items-center gap-3 mb-6">
-        <div className="w-12 h-12 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center text-white">
-          <Bot size={22} />
+    <div className="app-card rounded-3xl border border-white/10 shadow-2xl overflow-hidden">
+      <div className="bg-gradient-to-r from-cyan-500/15 via-blue-500/10 to-purple-500/15 border-b border-white/10 p-5 sm:p-6">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center text-white shadow-lg">
+              <Bot size={26} />
+            </div>
+
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-extrabold">
+                AI Productivity Assistant
+              </h2>
+
+              <p className="app-muted text-sm mt-1">
+                Ask questions, plan your day, and get task-based productivity insights.
+              </p>
+            </div>
+          </div>
+
+          <button
+            onClick={clearChat}
+            className="app-soft px-4 py-3 rounded-2xl flex items-center gap-2 hover:scale-[1.02] transition-all duration-300 text-sm font-semibold"
+          >
+            <Trash2 size={17} />
+            Clear Chat
+          </button>
         </div>
 
-        <div>
-          <h2 className="text-2xl font-bold">
-            AI Assistant
-          </h2>
-
-          <p className="app-muted text-sm">
-            Smart productivity companion
-          </p>
+        <div className="flex flex-wrap gap-3 mt-5">
+          {quickPrompts.map((item) => (
+            <button
+              key={item}
+              onClick={() => sendMessage(item)}
+              disabled={loading}
+              className="px-4 py-2 rounded-full app-soft text-sm hover:border-cyan-500/40 hover:scale-[1.02] transition-all duration-300 disabled:opacity-50"
+            >
+              <Sparkles size={14} className="inline mr-2 text-cyan-400" />
+              {item}
+            </button>
+          ))}
         </div>
       </div>
 
-      <div className="space-y-4 max-h-[450px] overflow-y-auto pr-2">
+      <div className="h-[520px] overflow-y-auto p-5 sm:p-6 space-y-5">
         {messages.map((message, index) => (
           <div
             key={index}
-            className={`flex ${
+            className={`flex gap-3 ${
               message.role === "user"
                 ? "justify-end"
                 : "justify-start"
             }`}
           >
+            {message.role === "assistant" && (
+              <div className="w-10 h-10 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center text-white shrink-0">
+                <Bot size={18} />
+              </div>
+            )}
+
             <div
-              className={`max-w-[85%] rounded-2xl px-5 py-4 shadow-lg ${
+              className={`max-w-[80%] rounded-3xl px-5 py-4 shadow-lg leading-relaxed ${
                 message.role === "user"
-                  ? "bg-gradient-to-r from-cyan-500 to-blue-500 text-white"
-                  : "app-soft"
+                  ? "bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-br-md"
+                  : "app-soft rounded-bl-md"
               }`}
             >
-              <div className="flex items-start gap-3">
-                <div className="mt-1">
-                  {message.role === "user" ? (
-                    <User size={18} />
-                  ) : (
-                    <Bot size={18} />
-                  )}
-                </div>
-
-                <p className="text-sm leading-relaxed whitespace-pre-line">
-                  {message.content}
-                </p>
-              </div>
+              <p className="text-sm sm:text-base whitespace-pre-line">
+                {message.content}
+              </p>
             </div>
+
+            {message.role === "user" && (
+              <div className="w-10 h-10 rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white shrink-0">
+                <User size={18} />
+              </div>
+            )}
           </div>
         ))}
 
         {loading && (
-          <div className="flex justify-start">
-            <div className="app-soft rounded-2xl px-5 py-4">
-              <p className="animate-pulse">
-                AI is typing...
-              </p>
+          <div className="flex gap-3 justify-start">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center text-white shrink-0">
+              <Bot size={18} />
+            </div>
+
+            <div className="app-soft rounded-3xl rounded-bl-md px-5 py-4">
+              <div className="flex gap-2">
+                <span className="w-2 h-2 rounded-full bg-cyan-400 animate-bounce"></span>
+                <span className="w-2 h-2 rounded-full bg-cyan-400 animate-bounce [animation-delay:0.15s]"></span>
+                <span className="w-2 h-2 rounded-full bg-cyan-400 animate-bounce [animation-delay:0.3s]"></span>
+              </div>
             </div>
           </div>
         )}
+
+        <div ref={chatEndRef} />
       </div>
 
-      <div className="flex gap-3 mt-6">
-        <input
-          type="text"
-          placeholder="Ask AI about your tasks..."
-          value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              sendMessage();
-            }
-          }}
-          className="flex-1 p-4 rounded-2xl app-input outline-none focus:outline-none focus:ring-0"
-        />
+      <div className="border-t border-white/10 p-4 sm:p-5">
+        <div className="flex flex-col sm:flex-row gap-3">
+          <input
+            type="text"
+            placeholder="Ask AI about your tasks, schedule, priorities..."
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                sendMessage();
+              }
+            }}
+            className="flex-1 p-4 rounded-2xl app-input outline-none focus:outline-none focus:ring-0"
+          />
 
-        <button
-          onClick={sendMessage}
-          disabled={loading}
-          className="w-14 h-14 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center hover:scale-105 transition-all duration-300 shadow-lg disabled:opacity-50 text-white"
-        >
-          <Send size={20} />
-        </button>
+          <button
+            onClick={() => sendMessage()}
+            disabled={loading}
+            className="sm:w-16 h-14 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center hover:scale-105 transition-all duration-300 shadow-lg disabled:opacity-50 text-white"
+          >
+            <Send size={21} />
+          </button>
+        </div>
       </div>
     </div>
   );
