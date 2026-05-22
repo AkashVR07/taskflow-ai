@@ -12,6 +12,7 @@ import Navbar from "@/components/Navbar";
 import DashboardCard from "@/components/DashboardCard";
 import AnalyticsChart from "@/components/AnalyticsChart";
 import ActivityTimeline from "@/components/ActivityTimeline";
+import ActivityFeed from "@/components/ActivityFeed";
 import CalendarView from "@/components/CalendarView";
 import UserProfileCard from "@/components/UserProfileCard";
 import KanbanBoard from "@/components/KanbanBoard";
@@ -220,6 +221,10 @@ export default function DashboardPage() {
           </section>
 
           <NotificationCenter tasks={tasks} />
+
+          <div className="mt-8">
+            <ActivityFeed tasks={tasks} />
+          </div>
 
           <section className="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6 mt-8">
             <ActivityTimeline tasks={tasks} />
