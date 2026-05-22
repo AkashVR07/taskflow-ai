@@ -189,55 +189,91 @@ export default function Navbar() {
                 </button>
 
                 {openProfile && (
-                  <div className="absolute right-0 top-16 w-64 rounded-2xl border border-white/10 bg-[#111827]/95 backdrop-blur-xl shadow-2xl overflow-hidden z-[9999]">
+  <div
+    className={`absolute right-0 top-16 w-64 rounded-2xl border shadow-2xl overflow-hidden z-[9999] backdrop-blur-2xl ${
+      darkMode
+        ? "bg-[#111827]/95 border-white/10 text-white"
+        : "bg-white/95 border-slate-200 text-slate-900"
+    }`}
+  >
 
-                    <div className="p-4 border-b border-white/10">
-                      <p className="font-semibold">
-                        {user?.name}
-                      </p>
+    {/* HEADER */}
+    <div
+      className={`p-4 border-b ${
+        darkMode
+          ? "border-white/10"
+          : "border-slate-200"
+      }`}
+    >
+      <p className="font-semibold text-base">
+        {user?.name}
+      </p>
 
-                      <p className="text-sm app-muted mt-1">
-                        {user?.email}
-                      </p>
-                    </div>
+      <p
+        className={
+          darkMode
+            ? "text-sm text-gray-400 mt-1"
+            : "text-sm text-slate-500 mt-1"
+        }
+      >
+        {user?.email}
+      </p>
+    </div>
 
-                    <div className="p-2">
+    {/* MENU */}
+    <div className="p-2 space-y-1">
 
-                      <button
-                        onClick={() =>
-                          router.push(
-                            "/profile"
-                          )
-                        }
-                        className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 transition-all duration-200 ease-out text-left"
-                      >
-                        <User size={18} />
-                        Profile
-                      </button>
+      {/* PROFILE */}
+      <button
+        onClick={() =>
+          router.push("/profile")
+        }
+        className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ease-out text-left ${
+          darkMode
+            ? "hover:bg-cyan-500/10"
+            : "hover:bg-cyan-100"
+        }`}
+      >
+        <User size={18} />
 
-                      <button
-                        onClick={() =>
-                          router.push(
-                            "/settings"
-                          )
-                        }
-                        className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 transition-all duration-200 ease-out text-left"
-                      >
-                        <Settings size={18} />
-                        Settings
-                      </button>
+        <span className="font-medium">
+          Profile
+        </span>
+      </button>
 
-                      <button
-                        onClick={logoutHandler}
-                        className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-400 hover:bg-red-500/10 transition-all duration-200 ease-out text-left"
-                      >
-                        <LogOut size={18} />
-                        Logout
-                      </button>
+      {/* SETTINGS */}
+      <button
+        onClick={() =>
+          router.push("/settings")
+        }
+        className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ease-out text-left ${
+          darkMode
+            ? "hover:bg-cyan-500/10"
+            : "hover:bg-cyan-100"
+        }`}
+      >
+        <Settings size={18} />
 
-                    </div>
-                  </div>
-                )}
+        <span className="font-medium">
+          Settings
+        </span>
+      </button>
+
+      {/* LOGOUT */}
+      <button
+        onClick={logoutHandler}
+        className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-500 hover:bg-red-500/10 transition-all duration-200 ease-out text-left"
+      >
+        <LogOut size={18} />
+
+        <span className="font-medium">
+          Logout
+        </span>
+      </button>
+
+    </div>
+  </div>
+)}
 
               </div>
 
