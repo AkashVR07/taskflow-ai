@@ -155,12 +155,18 @@ export default function Navbar() {
 
                     <div className="p-2">
 
-                      <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 transition-all duration-300 text-left">
+                      <button
+                        onClick={() => router.push("/profile")}
+                        className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 transition-all duration-300 text-left"
+                      >
                         <User size={18} />
                         Profile
                       </button>
 
-                      <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 transition-all duration-300 text-left">
+                      <button
+                        onClick={() => router.push("/settings")}
+                        className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 transition-all duration-300 text-left"
+                      >
                         <Settings size={18} />
                         Settings
                       </button>
