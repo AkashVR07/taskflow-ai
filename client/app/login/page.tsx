@@ -5,13 +5,19 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
 
-  const [email, setEmail] = useState("");
+  const [email, setEmail] =
+    useState("");
+
   const [password, setPassword] =
     useState("");
+
+  const [showPassword, setShowPassword] =
+    useState(false);
 
   const [loading, setLoading] =
     useState(false);
@@ -98,16 +104,40 @@ export default function LoginPage() {
               Password
             </label>
 
-            <input
-              type="password"
-              placeholder="Enter your password"
-              className="w-full p-4 rounded-2xl app-input outline-none focus:border-cyan-500 transition-all duration-300"
-              value={password}
-              onChange={(e) =>
-                setPassword(e.target.value)
-              }
-              required
-            />
+            <div className="relative">
+              <input
+                type={
+                  showPassword
+                    ? "text"
+                    : "password"
+                }
+                placeholder="Enter your password"
+                className="w-full p-4 pr-12 rounded-2xl app-input outline-none focus:border-cyan-500 transition-all duration-300"
+                value={password}
+                onChange={(e) =>
+                  setPassword(
+                    e.target.value
+                  )
+                }
+                required
+              />
+
+              <button
+                type="button"
+                onClick={() =>
+                  setShowPassword(
+                    !showPassword
+                  )
+                }
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-cyan-400 transition"
+              >
+                {showPassword ? (
+                  <EyeOff size={20} />
+                ) : (
+                  <Eye size={20} />
+                )}
+              </button>
+            </div>
           </div>
 
           <button
@@ -121,20 +151,20 @@ export default function LoginPage() {
           </button>
 
           <div className="mt-6 flex items-center justify-center gap-2 text-sm">
-  <span className="app-muted">
-    Don&apos;t have an account?
-  </span>
+            <span className="app-muted">
+              Don&apos;t have an account?
+            </span>
 
-  <button
-    type="button"
-    onClick={() =>
-      router.push("/register")
-    }
-    className="text-cyan-400 font-bold hover:text-cyan-300 transition-all duration-300"
-  >
-    Register
-  </button>
-</div>
+            <button
+              type="button"
+              onClick={() =>
+                router.push("/register")
+              }
+              className="text-cyan-400 font-bold hover:text-cyan-300 transition-all duration-300"
+            >
+              Register
+            </button>
+          </div>
         </div>
       </motion.form>
     </div>
