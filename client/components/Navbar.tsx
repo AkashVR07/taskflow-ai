@@ -26,6 +26,11 @@ export default function Navbar() {
   const [openProfile, setOpenProfile] =
     useState(false);
 
+  const [
+    openNotifications,
+    setOpenNotifications,
+  ] = useState(false);
+
   useEffect(() => {
     const storedUser =
       localStorage.getItem("userInfo");
@@ -89,12 +94,60 @@ export default function Navbar() {
             {/* ACTIONS */}
             <div className="flex items-center gap-3">
 
-              {/* NOTIFICATION */}
-              <button className="relative app-soft w-12 h-12 rounded-2xl flex items-center justify-center hover:scale-105 transition-all duration-300">
-                <Bell size={20} />
+              {/* NOTIFICATIONS */}
+              <div className="relative">
+                <button
+                  onClick={() =>
+                    setOpenNotifications(
+                      !openNotifications
+                    )
+                  }
+                  className="relative app-soft w-12 h-12 rounded-2xl flex items-center justify-center hover:scale-105 transition-all duration-300"
+                >
+                  <Bell size={20} />
 
-                <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-red-500 rounded-full"></span>
-              </button>
+                  <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-red-500 rounded-full"></span>
+                </button>
+
+                {openNotifications && (
+                  <div className="absolute right-0 top-16 w-80 rounded-2xl border border-white/10 bg-[#111827]/95 backdrop-blur-xl shadow-2xl overflow-hidden z-50">
+
+                    <div className="p-4 border-b border-white/10">
+                      <h3 className="font-semibold">
+                        Notifications
+                      </h3>
+
+                      <p className="text-sm app-muted mt-1">
+                        Recent task updates
+                      </p>
+                    </div>
+
+                    <div className="p-3 space-y-3">
+
+                      <div className="app-soft p-3 rounded-xl">
+                        <p className="text-sm font-semibold">
+                          Task Reminder
+                        </p>
+
+                        <p className="text-xs app-muted mt-1">
+                          You have pending tasks to complete.
+                        </p>
+                      </div>
+
+                      <div className="app-soft p-3 rounded-xl">
+                        <p className="text-sm font-semibold">
+                          AI Suggestion Ready
+                        </p>
+
+                        <p className="text-xs app-muted mt-1">
+                          Generate insights for better productivity.
+                        </p>
+                      </div>
+
+                    </div>
+                  </div>
+                )}
+              </div>
 
               {/* THEME */}
               <button
@@ -156,7 +209,11 @@ export default function Navbar() {
                     <div className="p-2">
 
                       <button
-                        onClick={() => router.push("/profile")}
+                        onClick={() =>
+                          router.push(
+                            "/profile"
+                          )
+                        }
                         className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 transition-all duration-300 text-left"
                       >
                         <User size={18} />
@@ -164,7 +221,11 @@ export default function Navbar() {
                       </button>
 
                       <button
-                        onClick={() => router.push("/settings")}
+                        onClick={() =>
+                          router.push(
+                            "/settings"
+                          )
+                        }
                         className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 transition-all duration-300 text-left"
                       >
                         <Settings size={18} />
