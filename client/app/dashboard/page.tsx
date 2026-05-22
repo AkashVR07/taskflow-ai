@@ -237,7 +237,7 @@ export default function DashboardPage() {
           />
         </section>
 
-        <section id="ai" className="pt-24 pb-28 scroll-mt-28">
+        <section id="ai" className="pt-20 pb-20 scroll-mt-24">
           <AIChat tasks={tasks} />
         </section>
 

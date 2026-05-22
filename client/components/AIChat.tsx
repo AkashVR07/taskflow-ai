@@ -1,6 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import ReactMarkdown from "react-markdown";
+import {
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import axios from "axios";
 import {
   Bot,
@@ -19,19 +24,42 @@ type Message = {
   content: string;
 };
 
+const defaultMessages: Message[] = [
+  {
+    role: "assistant",
+    content:
+      "Hello 👋 I’m your AI productivity assistant. Ask me about priorities, overdue tasks, planning, or how to complete your work faster.",
+  },
+];
+
 export default function AIChat({ tasks }: Props) {
   const [prompt, setPrompt] = useState("");
   const [loading, setLoading] = useState(false);
+  const [messages, setMessages] =
+    useState<Message[]>(defaultMessages);
 
-  const chatEndRef = useRef<HTMLDivElement | null>(null);
+  const chatEndRef =
+    useRef<HTMLDivElement | null>(null);
 
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      role: "assistant",
-      content:
-        "Hello 👋 I’m your AI productivity assistant. Ask me about priorities, overdue tasks, planning, or how to complete your work faster.",
-    },
-  ]);
+  useEffect(() => {
+    const savedMessages =
+      localStorage.getItem(
+        "taskflow_ai_chat"
+      );
+
+    if (savedMessages) {
+      setMessages(
+        JSON.parse(savedMessages)
+      );
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "taskflow_ai_chat",
+      JSON.stringify(messages)
+    );
+  }, [messages]);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({
@@ -46,10 +74,14 @@ export default function AIChat({ tasks }: Props) {
     "Create a work plan for today",
   ];
 
-  const sendMessage = async (customPrompt?: string) => {
-    const finalPrompt = customPrompt || prompt;
+  const sendMessage = async (
+    customPrompt?: string
+  ) => {
+    const finalPrompt =
+      customPrompt || prompt;
 
-    if (!finalPrompt.trim() || loading) return;
+    if (!finalPrompt.trim() || loading)
+      return;
 
     setMessages((prev) => [
       ...prev,
@@ -64,7 +96,8 @@ export default function AIChat({ tasks }: Props) {
 
     try {
       const userInfo = JSON.parse(
-        localStorage.getItem("userInfo") || "{}"
+        localStorage.getItem("userInfo") ||
+          "{}"
       );
 
       const { data } = await axios.post(
@@ -114,10 +147,14 @@ export default function AIChat({ tasks }: Props) {
           "Chat cleared ✅ Ask me anything about your tasks.",
       },
     ]);
+
+    localStorage.removeItem(
+      "taskflow_ai_chat"
+    );
   };
 
   return (
-    <div className="app-card rounded-3xl border border-white/10 shadow-2xl overflow-hidden">
+    <div className="app-card rounded-3xl border border-white/10 shadow-2xl overflow-hidden max-w-full">
       <div className="bg-gradient-to-r from-cyan-500/15 via-blue-500/10 to-purple-500/15 border-b border-white/10 p-5 sm:p-6">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
@@ -149,18 +186,23 @@ export default function AIChat({ tasks }: Props) {
           {quickPrompts.map((item) => (
             <button
               key={item}
-              onClick={() => sendMessage(item)}
+              onClick={() =>
+                sendMessage(item)
+              }
               disabled={loading}
               className="px-4 py-2 rounded-full app-soft text-sm hover:border-cyan-500/40 hover:scale-[1.02] transition-all duration-300 disabled:opacity-50"
             >
-              <Sparkles size={14} className="inline mr-2 text-cyan-400" />
+              <Sparkles
+                size={14}
+                className="inline mr-2 text-cyan-400"
+              />
               {item}
             </button>
           ))}
         </div>
       </div>
 
-      <div className="h-[520px] overflow-y-auto p-5 sm:p-6 space-y-5">
+      <div className="max-h-[420px] min-h-[320px] overflow-y-auto p-5 sm:p-6 space-y-5 scroll-smooth">
         {messages.map((message, index) => (
           <div
             key={index}
@@ -170,7 +212,8 @@ export default function AIChat({ tasks }: Props) {
                 : "justify-start"
             }`}
           >
-            {message.role === "assistant" && (
+            {message.role ===
+              "assistant" && (
               <div className="w-10 h-10 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center text-white shrink-0">
                 <Bot size={18} />
               </div>
@@ -183,9 +226,11 @@ export default function AIChat({ tasks }: Props) {
                   : "app-soft rounded-bl-md"
               }`}
             >
-              <p className="text-sm sm:text-base whitespace-pre-line">
-                {message.content}
-              </p>
+              <div className="max-w-none text-sm sm:text-base [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_strong]:font-bold [&_p]:mb-2">
+                <ReactMarkdown>
+                  {message.content}
+                </ReactMarkdown>
+              </div>
             </div>
 
             {message.role === "user" && (
@@ -221,7 +266,9 @@ export default function AIChat({ tasks }: Props) {
             type="text"
             placeholder="Ask AI about your tasks, schedule, priorities..."
             value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
+            onChange={(e) =>
+              setPrompt(e.target.value)
+            }
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 sendMessage();
