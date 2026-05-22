@@ -1,16 +1,8 @@
-const OpenAI = require("openai");
+const Groq = require("groq-sdk");
 
-const getOpenAIClient = () => {
-  if (!process.env.OPENAI_API_KEY) {
-    throw new Error(
-      "OPENAI_API_KEY is missing in .env file"
-    );
-  }
-
-  return new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-  });
-};
+const client = new Groq({
+  apiKey: process.env.GROQ_API_KEY,
+});
 
 const generateProductivityTips = async (req, res) => {
   try {
@@ -18,12 +10,9 @@ const generateProductivityTips = async (req, res) => {
 
     if (!tasks || tasks.length === 0) {
       return res.json({
-        suggestion:
-          "Add your first task to get productivity suggestions.",
+        suggestion: "Add your first task to get productivity suggestions.",
       });
     }
-
-    const totalTasks = tasks.length;
 
     const completedTasks = tasks.filter(
       (task) => task.status === "Completed"
@@ -37,40 +26,30 @@ const generateProductivityTips = async (req, res) => {
 
     if (pendingTasks > completedTasks) {
       suggestions.push(
-        "You have more pending tasks than completed tasks. Start by finishing the easiest pending task first."
+        "You have more pending tasks than completed tasks. Start with the easiest pending task first."
       );
     }
 
-    if (totalTasks >= 5) {
+    if (tasks.length >= 5) {
       suggestions.push(
-        "You have multiple tasks. Group similar tasks together and complete them in batches."
+        "Group similar tasks together and complete them in batches."
       );
     }
 
     if (completedTasks > 0) {
       suggestions.push(
-        "Good progress! Review your completed tasks and continue with the next high-priority item."
+        "Good progress! Continue with your next high-priority task."
       );
     }
 
-    if (suggestions.length === 0) {
-      suggestions.push(
-        "Focus on one task at a time and avoid multitasking for better productivity."
-      );
-    }
-
-    return res.json({
+    res.json({
       suggestion: suggestions
         .map((item, index) => `${index + 1}. ${item}`)
         .join("\n"),
     });
   } catch (error) {
-    console.log("AI SUGGESTION ERROR:", error);
-
-    return res.status(500).json({
-      message:
-        error.message ||
-        "Productivity suggestion failed",
+    res.status(500).json({
+      message: error.message,
     });
   }
 };
@@ -79,73 +58,37 @@ const chatWithAI = async (req, res) => {
   try {
     const { prompt, tasks } = req.body;
 
-    if (!prompt || !prompt.trim()) {
-      return res.status(400).json({
-        message: "Prompt is required",
-      });
-    }
-
-    const client = getOpenAIClient();
-
     const taskSummary =
-      tasks && tasks.length > 0
+      tasks?.length > 0
         ? tasks
             .map(
               (task) =>
-                `Title: ${task.title}, Status: ${task.status}, Priority: ${task.priority || "Medium"}, Due Date: ${task.dueDate || "No due date"}`
+                `Title: ${task.title}, Status: ${task.status}, Priority: ${task.priority}`
             )
             .join("\n")
         : "No tasks available";
 
-    const completion =
-      await client.chat.completions.create({
-        model: "gpt-4o-mini",
-        messages: [
-          {
-            role: "system",
-            content:
-              "You are a helpful AI productivity assistant inside a task management app. Give clear, practical, short suggestions based on the user's tasks.",
-          },
-          {
-            role: "user",
-            content: `
-User Tasks:
-${taskSummary}
+    const completion = await client.chat.completions.create({
+      model: "llama-3.1-8b-instant",
+      messages: [
+        {
+          role: "system",
+          content:
+            "You are a helpful AI productivity assistant inside a task management app. Give short and practical answers.",
+        },
+        {
+          role: "user",
+          content: `Tasks:\n${taskSummary}\n\nQuestion:\n${prompt}`,
+        },
+      ],
+    });
 
-User Question:
-${prompt}
-            `,
-          },
-        ],
-        temperature: 0.7,
-        max_tokens: 400,
-      });
-
-    return res.json({
-      reply:
-        completion?.choices?.[0]?.message
-          ?.content ||
-        "I could not generate a response.",
+    res.json({
+      reply: completion.choices[0].message.content,
     });
   } catch (error) {
-    console.log("AI CHAT ERROR:", error);
-    console.log(
-      "AI CHAT ERROR MESSAGE:",
-      error.message
-    );
-    console.log(
-      "AI CHAT ERROR STATUS:",
-      error.status
-    );
-    console.log(
-      "AI CHAT ERROR CODE:",
-      error.code
-    );
-
-    return res.status(500).json({
-      message:
-        error.message ||
-        "AI response generation failed",
+    res.status(500).json({
+      message: error.message || "AI response failed",
     });
   }
 };
