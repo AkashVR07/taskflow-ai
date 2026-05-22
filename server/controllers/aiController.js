@@ -2,7 +2,9 @@ const OpenAI = require("openai");
 
 const getOpenAIClient = () => {
   if (!process.env.OPENAI_API_KEY) {
-    throw new Error("OPENAI_API_KEY is missing in .env file");
+    throw new Error(
+      "OPENAI_API_KEY is missing in .env file"
+    );
   }
 
   return new OpenAI({
@@ -16,19 +18,22 @@ const generateProductivityTips = async (req, res) => {
 
     if (!tasks || tasks.length === 0) {
       return res.json({
-        suggestion: "Add your first task to get productivity suggestions.",
+        suggestion:
+          "Add your first task to get productivity suggestions.",
       });
     }
 
     const totalTasks = tasks.length;
+
     const completedTasks = tasks.filter(
       (task) => task.status === "Completed"
     ).length;
+
     const pendingTasks = tasks.filter(
       (task) => task.status === "Pending"
     ).length;
 
-    let suggestions = [];
+    const suggestions = [];
 
     if (pendingTasks > completedTasks) {
       suggestions.push(
@@ -54,14 +59,18 @@ const generateProductivityTips = async (req, res) => {
       );
     }
 
-    res.json({
+    return res.json({
       suggestion: suggestions
         .map((item, index) => `${index + 1}. ${item}`)
         .join("\n"),
     });
   } catch (error) {
-    res.status(500).json({
-      message: error.message,
+    console.log("AI SUGGESTION ERROR:", error);
+
+    return res.status(500).json({
+      message:
+        error.message ||
+        "Productivity suggestion failed",
     });
   }
 };
@@ -70,6 +79,12 @@ const chatWithAI = async (req, res) => {
   try {
     const { prompt, tasks } = req.body;
 
+    if (!prompt || !prompt.trim()) {
+      return res.status(400).json({
+        message: "Prompt is required",
+      });
+    }
+
     const client = getOpenAIClient();
 
     const taskSummary =
@@ -77,40 +92,60 @@ const chatWithAI = async (req, res) => {
         ? tasks
             .map(
               (task) =>
-                `Title: ${task.title}, Status: ${task.status}, Priority: ${task.priority}`
+                `Title: ${task.title}, Status: ${task.status}, Priority: ${task.priority || "Medium"}, Due Date: ${task.dueDate || "No due date"}`
             )
             .join("\n")
         : "No tasks available";
 
-    const completion = await client.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [
-        {
-          role: "system",
-          content:
-            "You are a smart AI productivity assistant helping users manage tasks, priorities, deadlines, and workflow efficiently.",
-        },
-        {
-          role: "user",
-          content: `
+    const completion =
+      await client.chat.completions.create({
+        model: "gpt-4o-mini",
+        messages: [
+          {
+            role: "system",
+            content:
+              "You are a helpful AI productivity assistant inside a task management app. Give clear, practical, short suggestions based on the user's tasks.",
+          },
+          {
+            role: "user",
+            content: `
 User Tasks:
 ${taskSummary}
 
 User Question:
 ${prompt}
-          `,
-        },
-      ],
-    });
+            `,
+          },
+        ],
+        temperature: 0.7,
+        max_tokens: 400,
+      });
 
-    res.json({
-      reply: completion.choices[0].message.content,
+    return res.json({
+      reply:
+        completion?.choices?.[0]?.message
+          ?.content ||
+        "I could not generate a response.",
     });
   } catch (error) {
-    console.log(error.response?.data || error.message);
+    console.log("AI CHAT ERROR:", error);
+    console.log(
+      "AI CHAT ERROR MESSAGE:",
+      error.message
+    );
+    console.log(
+      "AI CHAT ERROR STATUS:",
+      error.status
+    );
+    console.log(
+      "AI CHAT ERROR CODE:",
+      error.code
+    );
 
-    res.status(500).json({
-      message: error.message || "AI response generation failed",
+    return res.status(500).json({
+      message:
+        error.message ||
+        "AI response generation failed",
     });
   }
 };

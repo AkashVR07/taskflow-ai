@@ -41,6 +41,11 @@ export default function AIChat({ tasks }: Props) {
         localStorage.getItem("userInfo") || "{}"
       );
 
+    console.log(
+  "AI API URL:",
+  `${process.env.NEXT_PUBLIC_API_URL}/api/ai/chat`
+);
+
       const { data } = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/api/ai/chat`,
         {
