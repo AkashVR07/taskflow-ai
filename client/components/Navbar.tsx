@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTheme } from "@/context/ThemeContext";
 
 import {
   Bell,
@@ -15,10 +16,11 @@ import {
 } from "lucide-react";
 
 export default function Navbar() {
-  const router = useRouter();
 
-  const [dark, setDark] =
-    useState(true);
+  const { darkMode, toggleTheme } =
+  useTheme();
+
+  const router = useRouter();
 
   const [user, setUser] =
     useState<any>(null);
@@ -40,14 +42,7 @@ export default function Navbar() {
     }
   }, []);
 
-  const toggleTheme = () => {
-    setDark(!dark);
-
-    document.documentElement.classList.toggle(
-      "dark"
-    );
-  };
-
+    
   const logoutHandler = () => {
     localStorage.removeItem("userInfo");
 
@@ -154,7 +149,7 @@ export default function Navbar() {
                 onClick={toggleTheme}
                 className="app-soft w-12 h-12 rounded-2xl flex items-center justify-center hover:scale-105 transition-all duration-300"
               >
-                {dark ? (
+                {darkMode ? (
                   <Sun size={20} />
                 ) : (
                   <Moon size={20} />

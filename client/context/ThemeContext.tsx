@@ -28,40 +28,37 @@ export function ThemeProvider({
     const savedTheme = localStorage.getItem("theme");
 
     if (savedTheme === "light") {
-      setDarkMode(false);
       document.documentElement.classList.remove("dark");
       document.documentElement.classList.add("light");
+      setDarkMode(false);
     } else {
-      setDarkMode(true);
       document.documentElement.classList.remove("light");
       document.documentElement.classList.add("dark");
+      setDarkMode(true);
     }
   }, []);
 
   const toggleTheme = () => {
-    if (darkMode) {
-      document.documentElement.classList.remove("dark");
-      document.documentElement.classList.add("light");
-      localStorage.setItem("theme", "light");
-      setDarkMode(false);
-    } else {
-      document.documentElement.classList.remove("light");
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-      setDarkMode(true);
-    }
+    const newTheme = darkMode ? "light" : "dark";
+
+    document.documentElement.classList.remove(
+      darkMode ? "dark" : "light"
+    );
+
+    document.documentElement.classList.add(newTheme);
+
+    localStorage.setItem("theme", newTheme);
+    setDarkMode(!darkMode);
   };
 
   return (
     <ThemeContext.Provider
-      value={{
-        darkMode,
-        toggleTheme,
-      }}
+      value={{ darkMode, toggleTheme }}
     >
       {children}
     </ThemeContext.Provider>
   );
 }
 
-export const useTheme = () => useContext(ThemeContext);
+export const useTheme = () =>
+  useContext(ThemeContext);
