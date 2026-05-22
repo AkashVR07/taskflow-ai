@@ -5,13 +5,20 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
+import {
+  Eye,
+  EyeOff,
+  Loader2,
+} from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] =
+    useState("");
+
+  const [password, setPassword] =
+    useState("");
 
   const [showPassword, setShowPassword] =
     useState(false);
@@ -30,13 +37,14 @@ export default function LoginPage() {
     try {
       setLoading(true);
 
-      const { data } = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`,
-        {
-          email,
-          password,
-        }
-      );
+      const { data } =
+        await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`,
+          {
+            email,
+            password,
+          }
+        );
 
       localStorage.setItem(
         "userInfo",
@@ -45,15 +53,20 @@ export default function LoginPage() {
 
       document.cookie = `token=${data.token}; path=/; max-age=86400`;
 
-      toast.success("Login Successful");
+      toast.success(
+        "Login Successful"
+      );
+
       setSuccess(true);
 
       setTimeout(() => {
         router.push("/dashboard");
       }, 1500);
+
     } catch (error: any) {
       toast.error(
-        error?.response?.data?.message ||
+        error?.response?.data
+          ?.message ||
           "Login Failed"
       );
     } finally {
@@ -63,8 +76,11 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#06121f] via-[#0b1f35] to-[#071018] flex items-center justify-center px-4 py-10 relative overflow-hidden">
+
+      {/* Success Animation */}
       {success && (
         <div className="fixed inset-0 z-[9999] flex pointer-events-none">
+
           <motion.div
             initial={{ x: "0%" }}
             animate={{ x: "-100%" }}
@@ -84,24 +100,35 @@ export default function LoginPage() {
             }}
             className="w-1/2 h-full bg-[#06121f]"
           />
+
         </div>
       )}
 
+      {/* Glow Effects */}
       <div className="absolute w-72 h-72 bg-cyan-500/20 blur-3xl rounded-full top-10 left-10"></div>
 
       <div className="absolute w-72 h-72 bg-blue-500/20 blur-3xl rounded-full bottom-10 right-10"></div>
 
+      {/* Form */}
       <motion.form
-        initial={{ opacity: 0, y: 30 }}
+        initial={{
+          opacity: 0,
+          y: 30,
+        }}
         animate={{
           opacity: success ? 0 : 1,
           y: success ? -20 : 0,
         }}
-        transition={{ duration: 0.4 }}
+        transition={{
+          duration: 0.4,
+        }}
         onSubmit={submitHandler}
         className="relative z-10 w-full max-w-md p-8 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.37)]"
       >
+
+        {/* Header */}
         <div className="text-center mb-6">
+
           <h1 className="text-4xl font-extrabold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">
             TaskFlow AI
           </h1>
@@ -109,10 +136,14 @@ export default function LoginPage() {
           <p className="text-gray-300 mt-3">
             Login to continue
           </p>
+
         </div>
 
         <div className="space-y-5">
+
+          {/* Email */}
           <div>
+
             <label className="block mb-2 font-medium text-white">
               Email
             </label>
@@ -120,21 +151,25 @@ export default function LoginPage() {
             <input
               type="email"
               placeholder="Enter your email"
-              className="w-full p-4 rounded-2xl bg-white text-slate-900 placeholder:text-slate-500 border border-white/20 outline-none focus:border-cyan-500 transition-all duration-300"
+              className="auth-input w-full p-4 rounded-2xl outline-none transition-all duration-300"
               value={email}
               onChange={(e) =>
                 setEmail(e.target.value)
               }
               required
             />
+
           </div>
 
+          {/* Password */}
           <div>
+
             <label className="block mb-2 font-medium text-white">
               Password
             </label>
 
             <div className="relative">
+
               <input
                 type={
                   showPassword
@@ -142,10 +177,12 @@ export default function LoginPage() {
                     : "password"
                 }
                 placeholder="Enter your password"
-                className="w-full p-4 pr-12 rounded-2xl bg-white text-slate-900 placeholder:text-slate-500 border border-white/20 outline-none focus:border-cyan-500 transition-all duration-300"
+                className="auth-input w-full p-4 pr-12 rounded-2xl outline-none transition-all duration-300"
                 value={password}
                 onChange={(e) =>
-                  setPassword(e.target.value)
+                  setPassword(
+                    e.target.value
+                  )
                 }
                 required
               />
@@ -157,7 +194,7 @@ export default function LoginPage() {
                     !showPassword
                   )
                 }
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-cyan-400 hover:text-cyan-300 transition-all duration-300 z-10"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-cyan-500 hover:text-cyan-400 transition-all duration-300 z-10"
               >
                 {showPassword ? (
                   <EyeOff size={20} />
@@ -165,11 +202,16 @@ export default function LoginPage() {
                   <Eye size={20} />
                 )}
               </button>
+
             </div>
+
           </div>
 
+          {/* Remember */}
           <div className="flex items-center justify-between text-sm">
+
             <label className="flex items-center gap-2 cursor-pointer">
+
               <input
                 type="checkbox"
                 className="accent-cyan-500"
@@ -178,6 +220,7 @@ export default function LoginPage() {
               <span className="text-gray-300">
                 Remember me
               </span>
+
             </label>
 
             <button
@@ -186,13 +229,18 @@ export default function LoginPage() {
             >
               Forgot Password?
             </button>
+
           </div>
 
+          {/* Submit */}
           <button
             type="submit"
-            disabled={loading || success}
+            disabled={
+              loading || success
+            }
             className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white p-4 rounded-2xl font-semibold shadow-lg hover:scale-[1.02] transition-all duration-300 disabled:opacity-50"
           >
+
             {loading && (
               <Loader2
                 size={20}
@@ -205,9 +253,12 @@ export default function LoginPage() {
               : success
               ? "Redirecting..."
               : "Login"}
+
           </button>
 
+          {/* Register */}
           <div className="mt-6 flex items-center justify-center gap-2 text-sm">
+
             <span className="text-gray-300">
               Don&apos;t have an account?
             </span>
@@ -215,13 +266,17 @@ export default function LoginPage() {
             <button
               type="button"
               onClick={() =>
-                router.push("/register")
+                router.push(
+                  "/register"
+                )
               }
               className="text-cyan-400 font-bold hover:text-cyan-300 transition-all duration-300"
             >
               Register
             </button>
+
           </div>
+
         </div>
       </motion.form>
     </div>

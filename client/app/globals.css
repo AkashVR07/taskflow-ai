@@ -1,34 +1,65 @@
 @import "tailwindcss";
 
+/* =========================
+   ROOT VARIABLES
+========================= */
+
 :root {
   --bg-main: #020617;
   --bg-card: rgba(24, 24, 27, 0.88);
   --bg-soft: rgba(9, 9, 11, 0.82);
+
   --text-main: #ffffff;
   --text-muted: #a1a1aa;
+
   --border-main: rgba(255, 255, 255, 0.1);
+
   --input-bg: rgba(9, 9, 11, 0.9);
 }
+
+/* =========================
+   LIGHT MODE
+========================= */
 
 html.light {
   --bg-main: #eef3ff;
+
   --bg-card: rgba(255, 255, 255, 0.92);
+
   --bg-soft: rgba(243, 246, 252, 0.95);
+
   --text-main: #0f172a;
+
   --text-muted: #475569;
+
   --border-main: rgba(15, 23, 42, 0.12);
+
   --input-bg: rgba(255, 255, 255, 0.95);
 }
 
+/* =========================
+   DARK MODE
+========================= */
+
 html.dark {
   --bg-main: #020617;
+
   --bg-card: rgba(24, 24, 27, 0.88);
+
   --bg-soft: rgba(9, 9, 11, 0.82);
+
   --text-main: #ffffff;
+
   --text-muted: #a1a1aa;
+
   --border-main: rgba(255, 255, 255, 0.1);
+
   --input-bg: rgba(9, 9, 11, 0.9);
 }
+
+/* =========================
+   GLOBAL
+========================= */
 
 html,
 body {
@@ -38,34 +69,62 @@ body {
 
 body {
   background: var(--bg-main);
+
   color: var(--text-main);
+
   font-family: Arial, Helvetica, sans-serif;
+
   transition:
     background 0.35s ease,
     color 0.35s ease;
 }
 
+/* =========================
+   BACKGROUND
+========================= */
+
 .app-bg {
   background:
-    radial-gradient(circle at top left, rgba(6, 182, 212, 0.12), transparent 35%),
-    radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.12), transparent 35%),
+    radial-gradient(
+      circle at top left,
+      rgba(6, 182, 212, 0.12),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(59, 130, 246, 0.12),
+      transparent 35%
+    ),
     var(--bg-main);
+
   color: var(--text-main);
+
   transition: all 0.35s ease;
 }
 
+/* =========================
+   CARD STYLES
+========================= */
+
 .app-card {
   background: var(--bg-card);
+
   color: var(--text-main);
+
   border: 1px solid var(--border-main);
+
   backdrop-filter: blur(18px);
+
   transition: all 0.35s ease;
 }
 
 .app-soft {
   background: var(--bg-soft);
+
   color: var(--text-main);
+
   border: 1px solid var(--border-main);
+
   transition: all 0.35s ease;
 }
 
@@ -73,18 +132,64 @@ body {
   color: var(--text-muted);
 }
 
+/* =========================
+   NORMAL INPUTS
+========================= */
+
 .app-input {
   background: var(--input-bg);
+
   color: var(--text-main);
-  -webkit-text-fill-color: var(--text-main);
+
   border: 1px solid var(--border-main);
+
   transition: all 0.3s ease;
 }
 
 .app-input::placeholder {
   color: var(--text-muted);
-  -webkit-text-fill-color: var(--text-muted);
 }
+
+/* =========================
+   AUTH INPUTS
+========================= */
+
+.auth-input {
+  background: #ffffff !important;
+
+  color: #0f172a !important;
+
+  -webkit-text-fill-color: #0f172a !important;
+
+  caret-color: #0f172a !important;
+
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+.auth-input::placeholder {
+  color: #64748b !important;
+
+  -webkit-text-fill-color: #64748b !important;
+}
+
+.auth-input:focus {
+  border-color: #06b6d4 !important;
+
+  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.18) !important;
+}
+
+.auth-input:-webkit-autofill,
+.auth-input:-webkit-autofill:hover,
+.auth-input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #0f172a !important;
+
+  box-shadow:
+    0 0 0px 1000px #ffffff inset !important;
+}
+
+/* =========================
+   FORM ELEMENTS
+========================= */
 
 button {
   cursor: pointer;
@@ -93,22 +198,26 @@ button {
 input,
 textarea,
 select {
-  color: var(--text-main);
+  -webkit-appearance: none;
+
+  appearance: none;
 }
+
+/* =========================
+   FOCUS STYLES
+========================= */
 
 input:focus,
 textarea:focus,
 select:focus {
   outline: none !important;
+
   border-color: #3b82f6 !important;
 }
 
-input,
-textarea,
-select {
-  -webkit-appearance: none;
-  appearance: none;
-}
+/* =========================
+   DATE INPUTS
+========================= */
 
 html.dark input[type="date"] {
   color-scheme: dark;
@@ -118,39 +227,16 @@ html.light input[type="date"] {
   color-scheme: light;
 }
 
-html.dark input[type="date"]::-webkit-calendar-picker-indicator {
+html.dark
+  input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(1);
+
   cursor: pointer;
 }
 
-html.light input[type="date"]::-webkit-calendar-picker-indicator {
+html.light
+  input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(0);
+
   cursor: pointer;
-}
-
-/* Auth input visibility fix */
-.auth-input {
-  background: #ffffff !important;
-  color: #0f172a !important;
-  -webkit-text-fill-color: #0f172a !important;
-  border: 1px solid rgba(255, 255, 255, 0.25) !important;
-}
-
-.auth-input::placeholder {
-  color: #64748b !important;
-  -webkit-text-fill-color: #64748b !important;
-}
-
-.auth-input:focus {
-  color: #0f172a !important;
-  -webkit-text-fill-color: #0f172a !important;
-  border-color: #06b6d4 !important;
-  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.18) !important;
-}
-
-.auth-input:-webkit-autofill,
-.auth-input:-webkit-autofill:hover,
-.auth-input:-webkit-autofill:focus {
-  -webkit-text-fill-color: #0f172a !important;
-  box-shadow: 0 0 0px 1000px #ffffff inset !important;
 }
