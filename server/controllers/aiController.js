@@ -107,7 +107,7 @@ ${prompt}
       reply: completion.choices[0].message.content,
     });
   } catch (error) {
-    console.log(error);
+    console.log(error.response?.data || error.message);
 
     res.status(500).json({
       message: error.message || "AI response generation failed",
