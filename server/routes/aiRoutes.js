@@ -1,17 +1,26 @@
 const express = require("express");
 
-const { protect } = require("../middleware/authMiddleware");
+const router = express.Router();
 
 const {
   generateProductivityTips,
+  chatWithAI,
 } = require("../controllers/aiController");
 
-const router = express.Router();
+const {
+  protect,
+} = require("../middleware/authMiddleware");
 
 router.post(
   "/suggestions",
   protect,
   generateProductivityTips
+);
+
+router.post(
+  "/chat",
+  protect,
+  chatWithAI
 );
 
 module.exports = router;
