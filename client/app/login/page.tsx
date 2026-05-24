@@ -104,12 +104,14 @@ export default function LoginPage() {
         </div>
       )}
 
-      {/* BACKGROUND GLOW */}
+      {/* GLOW EFFECTS */}
+
       <div className="absolute w-72 h-72 bg-cyan-500/20 blur-3xl rounded-full top-10 left-10"></div>
 
       <div className="absolute w-72 h-72 bg-blue-500/20 blur-3xl rounded-full bottom-10 right-10"></div>
 
       {/* LOGIN CARD */}
+
       <motion.form
         initial={{
           opacity: 0,
@@ -127,24 +129,26 @@ export default function LoginPage() {
       >
 
         {/* HEADER */}
+
         <div className="text-center mb-6">
 
-          <h1 className="text-4xl font-extrabold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">
+          <h1 className="text-5xl font-black bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">
             TaskFlow AI
           </h1>
 
-          <p className="text-gray-300 mt-3">
+          <p className="text-gray-300 mt-4 text-lg">
             Login to continue
           </p>
 
         </div>
 
-        <div className="space-y-5">
+        <div className="space-y-6">
 
           {/* EMAIL */}
+
           <div>
 
-            <label className="block mb-2 font-medium text-white">
+            <label className="block mb-3 font-semibold text-white text-lg">
               Email
             </label>
 
@@ -156,15 +160,16 @@ export default function LoginPage() {
                 setEmail(e.target.value)
               }
               required
-              className="auth-input w-full p-4 rounded-2xl outline-none focus:border-cyan-500 transition-all duration-300"
+              className="w-full p-4 rounded-2xl bg-white text-black placeholder:text-slate-500 border border-white/20 outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/20 transition-all duration-300"
             />
 
           </div>
 
           {/* PASSWORD */}
+
           <div>
 
-            <label className="block mb-2 font-medium text-white">
+            <label className="block mb-3 font-semibold text-white text-lg">
               Password
             </label>
 
@@ -184,7 +189,7 @@ export default function LoginPage() {
                   )
                 }
                 required
-                className="auth-input w-full p-4 pr-12 rounded-2xl outline-none focus:border-cyan-500 transition-all duration-300"
+                className="w-full p-4 pr-14 rounded-2xl bg-white text-black placeholder:text-slate-500 border border-white/20 outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/20 transition-all duration-300"
               />
 
               <button
@@ -194,12 +199,12 @@ export default function LoginPage() {
                     !showPassword
                   )
                 }
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-cyan-500 hover:text-cyan-400 transition-all duration-300 z-10"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-cyan-500 hover:text-cyan-400 transition-all duration-300"
               >
                 {showPassword ? (
-                  <EyeOff size={20} />
+                  <EyeOff size={22} />
                 ) : (
-                  <Eye size={20} />
+                  <Eye size={22} />
                 )}
               </button>
 
@@ -208,6 +213,7 @@ export default function LoginPage() {
           </div>
 
           {/* OPTIONS */}
+
           <div className="flex items-center justify-between text-sm">
 
             <label className="flex items-center gap-2 cursor-pointer">
@@ -225,7 +231,7 @@ export default function LoginPage() {
 
             <button
               type="button"
-              className="text-cyan-400 hover:text-cyan-300 transition-all duration-300"
+              className="text-cyan-400 hover:text-cyan-300 transition-all duration-300 font-medium"
             >
               Forgot Password?
             </button>
@@ -233,17 +239,18 @@ export default function LoginPage() {
           </div>
 
           {/* LOGIN BUTTON */}
+
           <button
             type="submit"
             disabled={
               loading || success
             }
-            className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white p-4 rounded-2xl font-semibold shadow-lg hover:scale-[1.02] transition-all duration-300 disabled:opacity-50"
+            className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white p-4 rounded-2xl font-bold text-lg shadow-lg hover:scale-[1.02] transition-all duration-300 disabled:opacity-50"
           >
 
             {loading && (
               <Loader2
-                size={20}
+                size={22}
                 className="animate-spin"
               />
             )}
@@ -257,11 +264,11 @@ export default function LoginPage() {
           </button>
 
           {/* REGISTER */}
+
           <div className="mt-6 flex items-center justify-center gap-2 text-sm">
 
             <span className="text-gray-300">
-              Don&apos;t have an
-              account?
+              Don&apos;t have an account?
             </span>
 
             <button
