@@ -105,13 +105,11 @@ export default function LoginPage() {
       )}
 
       {/* GLOW EFFECTS */}
-
       <div className="absolute w-72 h-72 bg-cyan-500/20 blur-3xl rounded-full top-10 left-10"></div>
 
       <div className="absolute w-72 h-72 bg-blue-500/20 blur-3xl rounded-full bottom-10 right-10"></div>
 
       {/* LOGIN CARD */}
-
       <motion.form
         initial={{
           opacity: 0,
@@ -129,7 +127,6 @@ export default function LoginPage() {
       >
 
         {/* HEADER */}
-
         <div className="text-center mb-6">
 
           <h1 className="text-5xl font-black bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">
@@ -145,7 +142,6 @@ export default function LoginPage() {
         <div className="space-y-6">
 
           {/* EMAIL */}
-
           <div>
 
             <label className="block mb-3 font-semibold text-white text-lg">
@@ -166,7 +162,6 @@ export default function LoginPage() {
           </div>
 
           {/* PASSWORD */}
-
           <div>
 
             <label className="block mb-3 font-semibold text-white text-lg">
@@ -213,7 +208,6 @@ export default function LoginPage() {
           </div>
 
           {/* OPTIONS */}
-
           <div className="flex items-center justify-between text-sm">
 
             <label className="flex items-center gap-2 cursor-pointer">
@@ -239,7 +233,6 @@ export default function LoginPage() {
           </div>
 
           {/* LOGIN BUTTON */}
-
           <button
             type="submit"
             disabled={
@@ -264,7 +257,6 @@ export default function LoginPage() {
           </button>
 
           {/* REGISTER */}
-
           <div className="mt-6 flex items-center justify-center gap-2 text-sm">
 
             <span className="text-gray-300">

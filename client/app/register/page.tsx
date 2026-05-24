@@ -150,7 +150,7 @@ export default function RegisterPage() {
                 setName(e.target.value)
               }
               required
-              className="auth-input w-full p-4 rounded-2xl outline-none focus:border-cyan-500 transition-all duration-300"
+              className="w-full p-4 rounded-2xl bg-white text-black placeholder:text-slate-500 border border-white/20 outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/20 transition-all duration-300"
             />
 
           </div>
@@ -170,7 +170,7 @@ export default function RegisterPage() {
                 setEmail(e.target.value)
               }
               required
-              className="auth-input w-full p-4 rounded-2xl outline-none focus:border-cyan-500 transition-all duration-300"
+              className="w-full p-4 rounded-2xl bg-white text-black placeholder:text-slate-500 border border-white/20 outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/20 transition-all duration-300"
             />
 
           </div>
@@ -198,7 +198,7 @@ export default function RegisterPage() {
                   )
                 }
                 required
-                className="auth-input w-full p-4 pr-12 rounded-2xl outline-none focus:border-cyan-500 transition-all duration-300"
+                className="w-full p-4 pr-12 rounded-2xl bg-white text-black placeholder:text-slate-500 border border-white/20 outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/20 transition-all duration-300"
               />
 
               <button
@@ -231,8 +231,7 @@ export default function RegisterPage() {
                   className={`h-full rounded-full transition-all duration-300 ${
                     password.length < 6
                       ? "w-1/3 bg-red-500"
-                      : password.length <
-                        10
+                      : password.length < 10
                       ? "w-2/3 bg-yellow-500"
                       : "w-full bg-green-500"
                   }`}
@@ -244,16 +243,14 @@ export default function RegisterPage() {
                 className={`text-xs ${
                   password.length < 6
                     ? "text-red-400"
-                    : password.length <
-                      10
+                    : password.length < 10
                     ? "text-yellow-400"
                     : "text-green-400"
                 }`}
               >
                 {password.length < 6
                   ? "Weak password"
-                  : password.length <
-                    10
+                  : password.length < 10
                   ? "Medium password"
                   : "Strong password"}
               </p>
@@ -286,7 +283,7 @@ export default function RegisterPage() {
                   )
                 }
                 required
-                className="auth-input w-full p-4 pr-12 rounded-2xl outline-none focus:border-cyan-500 transition-all duration-300"
+                className="w-full p-4 pr-12 rounded-2xl bg-white text-black placeholder:text-slate-500 border border-white/20 outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/20 transition-all duration-300"
               />
 
               <button
@@ -350,8 +347,7 @@ export default function RegisterPage() {
           <div className="mt-6 flex items-center justify-center gap-2 text-sm">
 
             <span className="text-gray-300">
-              Already have an
-              account?
+              Already have an account?
             </span>
 
             <button
