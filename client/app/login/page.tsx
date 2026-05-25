@@ -209,28 +209,24 @@ export default function LoginPage() {
 
           {/* OPTIONS */}
           <div className="flex items-center justify-between text-sm">
+  <label className="flex items-center gap-3 cursor-pointer select-none">
+    <input
+      type="checkbox"
+      className="w-4 h-4 accent-cyan-500 rounded cursor-pointer"
+    />
 
-            <label className="flex items-center gap-2 cursor-pointer">
+    <span className="text-gray-300">
+      Remember me
+    </span>
+  </label>
 
-              <input
-                type="checkbox"
-                className="accent-cyan-500"
-              />
-
-              <span className="text-gray-300">
-                Remember me
-              </span>
-
-            </label>
-
-            <button
-              type="button"
-              className="text-cyan-400 hover:text-cyan-300 transition-all duration-300 font-medium"
-            >
-              Forgot Password?
-            </button>
-
-          </div>
+  <button
+    type="button"
+    className="text-cyan-400 hover:text-cyan-300 transition-all duration-300 font-medium"
+  >
+    Forgot Password?
+  </button>
+</div>
 
           {/* LOGIN BUTTON */}
           <button
