@@ -244,3 +244,76 @@ html.light
 
   cursor: pointer;
 }
+
+
+/* =========================
+   PREMIUM CALENDAR
+========================= */
+
+.calendar-premium-wrapper .react-calendar {
+  width: 100%;
+  border: none !important;
+  background: var(--bg-soft) !important;
+  color: var(--text-main) !important;
+  border-radius: 24px;
+  padding: 16px;
+}
+
+.calendar-premium-wrapper .react-calendar__navigation {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.calendar-premium-wrapper .react-calendar__navigation button {
+  background: var(--bg-card) !important;
+  color: var(--text-main) !important;
+  border-radius: 14px;
+  padding: 10px;
+  font-weight: 700;
+}
+
+.calendar-premium-wrapper .react-calendar__month-view__weekdays {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.calendar-premium-wrapper .react-calendar__tile {
+  border-radius: 14px;
+  padding: 14px 8px;
+  color: var(--text-main) !important;
+  position: relative;
+}
+
+.calendar-premium-wrapper .react-calendar__tile:hover {
+  background: rgba(6, 182, 212, 0.14) !important;
+}
+
+.calendar-premium-wrapper .react-calendar__tile--active {
+  background: linear-gradient(
+    135deg,
+    #06b6d4,
+    #3b82f6
+  ) !important;
+  color: white !important;
+}
+
+.calendar-premium-wrapper .react-calendar__tile--now {
+  background: rgba(6, 182, 212, 0.15) !important;
+  color: #06b6d4 !important;
+}
+
+.calendar-premium-wrapper .task-date::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  background: #22c55e;
+  border-radius: 999px;
+  position: absolute;
+  left: 50%;
+  bottom: 6px;
+  transform: translateX(-50%);
+}
