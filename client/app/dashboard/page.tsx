@@ -24,17 +24,24 @@ import FloatingAI from "@/components/FloatingAI";
 export default function DashboardPage() {
   const router = useRouter();
 
-  const [tasks, setTasks] = useState<any[]>([]);
-  const [userInfo, setUserInfo] = useState<any>(null);
+  const [tasks, setTasks] =
+    useState<any[]>([]);
 
-  const [showCreateModal, setShowCreateModal] =
-    useState(false);
+  const [userInfo, setUserInfo] =
+    useState<any>(null);
+
+  const [
+    showCreateModal,
+    setShowCreateModal,
+  ] = useState(false);
 
   const [search, setSearch] =
     useState("");
 
-  const [filterPriority, setFilterPriority] =
-    useState("All");
+  const [
+    filterPriority,
+    setFilterPriority,
+  ] = useState("All");
 
   const [sortBy, setSortBy] =
     useState("Newest");
@@ -43,14 +50,15 @@ export default function DashboardPage() {
     if (!userInfo?.token) return;
 
     try {
-      const { data } = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/tasks`,
-        {
-          headers: {
-            Authorization: `Bearer ${userInfo.token}`,
-          },
-        }
-      );
+      const { data } =
+        await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/tasks`,
+          {
+            headers: {
+              Authorization: `Bearer ${userInfo.token}`,
+            },
+          }
+        );
 
       setTasks(data);
 
@@ -85,6 +93,7 @@ export default function DashboardPage() {
     })
 
     .sort((a, b) => {
+
       if (sortBy === "Newest") {
         return (
           new Date(
@@ -119,9 +128,11 @@ export default function DashboardPage() {
       }
 
       return 0;
+
     });
 
   useEffect(() => {
+
     const storedUser =
       localStorage.getItem(
         "userInfo"
@@ -135,16 +146,20 @@ export default function DashboardPage() {
     setUserInfo(
       JSON.parse(storedUser)
     );
+
   }, [router]);
 
   useEffect(() => {
+
     if (userInfo?.token) {
       fetchTasks();
     }
+
   }, [userInfo]);
 
   return (
     <div className="min-h-screen app-bg">
+
       <Sidebar />
 
       <motion.main
@@ -159,7 +174,7 @@ export default function DashboardPage() {
         transition={{
           duration: 0.5,
         }}
-        className="lg:ml-72 min-w-0 px-4 py-5 pb-28 md:px-8 lg:px-10 lg:pb-5 overflow-x-hidden"
+        className="lg:ml-72 min-w-0 px-4 py-5 pb-24 md:px-7 lg:px-9 lg:pb-8 overflow-x-hidden"
       >
 
         <Navbar />
@@ -167,7 +182,7 @@ export default function DashboardPage() {
         {/* DASHBOARD */}
         <section
           id="dashboard"
-          className="pt-6 scroll-mt-8"
+          className="pt-4 scroll-mt-24"
         >
 
           <UserProfileCard
@@ -175,6 +190,7 @@ export default function DashboardPage() {
             tasks={tasks}
           />
 
+          {/* STATS */}
           <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6 mt-6">
 
             <DashboardCard
@@ -225,11 +241,19 @@ export default function DashboardPage() {
 
           </section>
 
-          <NotificationCenter tasks={tasks} />
+          {/* NOTIFICATIONS */}
+          <div className="mt-6">
+            <NotificationCenter
+              tasks={tasks}
+            />
+          </div>
 
-          <section className="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6 mt-8">
+          {/* ACTIVITY + PRODUCTIVITY */}
+          <section className="grid grid-cols-1 xl:grid-cols-2 gap-5 sm:gap-6 mt-7">
 
-            <ActivityFeed tasks={tasks} />
+            <ActivityFeed
+              tasks={tasks}
+            />
 
             <ProgressRing
               completed={
@@ -244,11 +268,16 @@ export default function DashboardPage() {
 
           </section>
 
-          <section className="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6 mt-8">
+          {/* TIMELINE + CALENDAR */}
+          <section className="grid grid-cols-1 xl:grid-cols-2 gap-5 sm:gap-6 mt-7">
 
-            <ActivityTimeline tasks={tasks} />
+            <ActivityTimeline
+              tasks={tasks}
+            />
 
-            <CalendarView tasks={tasks} />
+            <CalendarView
+              tasks={tasks}
+            />
 
           </section>
 
@@ -257,22 +286,26 @@ export default function DashboardPage() {
         {/* ANALYTICS */}
         <section
           id="analytics"
-          className="pt-20 scroll-mt-8"
+          className="pt-14 scroll-mt-24"
         >
-          <AnalyticsChart tasks={tasks} />
+
+          <AnalyticsChart
+            tasks={tasks}
+          />
+
         </section>
 
         {/* TASKS */}
         <section
           id="tasks"
-          className="pt-20 scroll-mt-8"
+          className="pt-14 scroll-mt-24"
         >
 
-          <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 mb-5">
+          <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 mb-6">
 
             <div>
 
-              <h2 className="text-2xl font-bold">
+              <h2 className="text-3xl font-extrabold tracking-tight">
                 Your Tasks
               </h2>
 
@@ -293,7 +326,7 @@ export default function DashboardPage() {
                     true
                   )
                 }
-                className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-6 py-3 rounded-xl font-semibold hover:scale-[1.02] transition-all duration-300"
+                className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-6 py-3 rounded-2xl font-semibold hover:scale-[1.02] transition-all duration-300 shadow-lg hover:shadow-cyan-500/20"
               >
                 + Create Task
               </button>
@@ -301,7 +334,7 @@ export default function DashboardPage() {
               <input
                 type="text"
                 placeholder="Search tasks..."
-                className="w-full md:w-auto p-3 sm:p-4 rounded-xl app-input outline-none focus:border-blue-500 transition-all duration-300 text-sm sm:text-base"
+                className="w-full md:w-auto p-3 sm:p-4 rounded-2xl app-input outline-none focus:border-blue-500 transition-all duration-300 text-sm sm:text-base"
                 value={search}
                 onChange={(e) =>
                   setSearch(
@@ -311,7 +344,7 @@ export default function DashboardPage() {
               />
 
               <select
-                className="w-full md:w-auto p-3 sm:p-4 rounded-xl app-input outline-none focus:border-blue-500 transition-all duration-300 text-sm sm:text-base"
+                className="w-full md:w-auto p-3 sm:p-4 rounded-2xl app-input outline-none focus:border-blue-500 transition-all duration-300 text-sm sm:text-base"
                 value={
                   filterPriority
                 }
@@ -341,7 +374,7 @@ export default function DashboardPage() {
               </select>
 
               <select
-                className="w-full md:w-auto p-3 sm:p-4 rounded-xl app-input outline-none focus:border-blue-500 transition-all duration-300 text-sm sm:text-base"
+                className="w-full md:w-auto p-3 sm:p-4 rounded-2xl app-input outline-none focus:border-blue-500 transition-all duration-300 text-sm sm:text-base"
                 value={sortBy}
                 onChange={(e) =>
                   setSortBy(
@@ -378,7 +411,7 @@ export default function DashboardPage() {
         {/* AI SECTION */}
         <section
           id="ai"
-          className="pt-10 pb-10 scroll-mt-20"
+          className="pt-14 pb-14 scroll-mt-24"
         >
 
           <div className="max-w-6xl mx-auto">
