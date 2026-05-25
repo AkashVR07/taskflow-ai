@@ -26,21 +26,16 @@ export default function TaskCard({
   dueDate,
   fetchTasks,
 }: Props) {
+  const [showModal, setShowModal] = useState(false);
+
   const userInfo =
     typeof window !== "undefined"
-      ? JSON.parse(
-          localStorage.getItem("userInfo") || "{}"
-        )
+      ? JSON.parse(localStorage.getItem("userInfo") || "{}")
       : null;
-
-  const [showModal, setShowModal] =
-    useState(false);
 
   const updateStatus = async () => {
     const newStatus =
-      status === "Completed"
-        ? "Pending"
-        : "Completed";
+      status === "Completed" ? "Pending" : "Completed";
 
     try {
       await axios.put(
@@ -48,13 +43,12 @@ export default function TaskCard({
         { status: newStatus },
         {
           headers: {
-            Authorization: `Bearer ${userInfo.token}`,
+            Authorization: `Bearer ${userInfo?.token}`,
           },
         }
       );
 
       fetchTasks();
-
       toast.dismiss();
       toast.success(`Task moved to ${newStatus}`);
     } catch (error) {
@@ -69,13 +63,12 @@ export default function TaskCard({
         `${process.env.NEXT_PUBLIC_API_URL}/api/tasks/${id}`,
         {
           headers: {
-            Authorization: `Bearer ${userInfo.token}`,
+            Authorization: `Bearer ${userInfo?.token}`,
           },
         }
       );
 
       fetchTasks();
-
       toast.dismiss();
       toast.success("Task deleted");
     } catch (error) {
@@ -94,21 +87,10 @@ export default function TaskCard({
   return (
     <>
       <motion.div
-        initial={{
-          opacity: 0,
-          y: 20,
-        }}
-        animate={{
-          opacity: 1,
-          y: 0,
-        }}
-        whileHover={{
-          y: -5,
-          scale: 1.01,
-        }}
-        transition={{
-          duration: 0.3,
-        }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        whileHover={{ y: -5, scale: 1.01 }}
+        transition={{ duration: 0.3 }}
         className="app-card p-4 sm:p-6 rounded-2xl shadow-lg hover:shadow-2xl hover:border-blue-500/40 transition-all duration-300 backdrop-blur-md overflow-hidden"
       >
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
@@ -145,22 +127,6 @@ export default function TaskCard({
           )}
         </div>
 
-        {showModal && (
-          <EditTaskModal
-            task={{
-              _id: id,
-              title,
-              description,
-              priority,
-              dueDate,
-            }}
-            closeModal={() =>
-              setShowModal(false)
-            }
-            fetchTasks={fetchTasks}
-          />
-        )}
-
         <div className="flex flex-col sm:flex-row flex-wrap gap-3 mt-8">
           <button
             onClick={updateStatus}
@@ -170,9 +136,7 @@ export default function TaskCard({
           </button>
 
           <button
-            onClick={() =>
-              setShowModal(true)
-            }
+            onClick={() => setShowModal(true)}
             className="w-full sm:w-auto bg-blue-500 text-white px-5 py-3 rounded-xl font-semibold hover:bg-blue-600 hover:scale-[1.03] transition-all duration-300 shadow-md text-sm"
           >
             Edit
@@ -186,6 +150,20 @@ export default function TaskCard({
           </button>
         </div>
       </motion.div>
+
+      {showModal && (
+        <EditTaskModal
+          task={{
+            _id: id,
+            title,
+            description,
+            priority,
+            dueDate,
+          }}
+          closeModal={() => setShowModal(false)}
+          fetchTasks={fetchTasks}
+        />
+      )}
     </>
   );
 }
