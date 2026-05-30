@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Bot, X } from "lucide-react";
+import { Bot, X, Sparkles } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
 import AIChat from "./AIChat";
 
 type Props = {
@@ -11,31 +12,61 @@ type Props = {
 export default function FloatingAI({
   tasks,
 }: Props) {
-  const [open, setOpen] =
-    useState(false);
+  const [open, setOpen] = useState(false);
 
   return (
     <>
-      {/* FLOATING BUTTON */}
-      <button
-        onClick={() =>
-          setOpen(!open)
-        }
-        className="fixed bottom-6 right-6 z-[999] w-16 h-16 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 shadow-2xl flex items-center justify-center hover:scale-110 transition-all duration-300"
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{
+              opacity: 0,
+              scale: 0.9,
+              y: 30,
+            }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+              y: 0,
+            }}
+            exit={{
+              opacity: 0,
+              scale: 0.9,
+              y: 30,
+            }}
+            transition={{
+              duration: 0.25,
+            }}
+            className="fixed bottom-28 right-4 sm:right-6 z-[9998] w-[calc(100vw-2rem)] sm:w-[460px] lg:w-[520px] h-[75vh] max-h-[720px] rounded-3xl overflow-hidden shadow-[0_0_45px_rgba(6,182,212,0.35)] border border-cyan-500/20"
+          >
+            <AIChat tasks={tasks} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <motion.button
+        whileHover={{
+          scale: 1.1,
+        }}
+        whileTap={{
+          scale: 0.95,
+        }}
+        onClick={() => setOpen(!open)}
+        className="fixed bottom-6 right-6 z-[9999] w-16 h-16 rounded-full bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 shadow-[0_0_35px_rgba(6,182,212,0.5)] flex items-center justify-center text-white transition-all duration-300"
       >
         {open ? (
-          <X size={26} />
+          <X size={27} />
         ) : (
-          <Bot size={28} />
-        )}
-      </button>
+          <div className="relative">
+            <Bot size={29} />
 
-      {/* CHAT POPUP */}
-      {open && (
-        <div className="fixed bottom-28 right-6 z-[999] w-[95vw] sm:w-[420px] h-[75vh] max-h-[700px] shadow-2xl rounded-3xl overflow-hidden">
-          <AIChat tasks={tasks} />
-        </div>
-      )}
+            <Sparkles
+              size={15}
+              className="absolute -top-2 -right-2 text-yellow-300 animate-pulse"
+            />
+          </div>
+        )}
+      </motion.button>
     </>
   );
 }

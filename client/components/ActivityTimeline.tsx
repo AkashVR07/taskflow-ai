@@ -1,6 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
+import {
+  Clock3,
+  CheckCircle2,
+  AlertCircle,
+  Activity,
+} from "lucide-react";
 
 type Task = {
   _id: string;
@@ -15,73 +21,141 @@ type Props = {
   tasks: Task[];
 };
 
-export default function ActivityTimeline({ tasks }: Props) {
+export default function ActivityTimeline({
+  tasks,
+}: Props) {
   const recentTasks = [...tasks]
     .sort(
       (a, b) =>
-        new Date(b.updatedAt || "").getTime() -
-        new Date(a.updatedAt || "").getTime()
+        new Date(
+          b.updatedAt || b.createdAt || ""
+        ).getTime() -
+        new Date(
+          a.updatedAt || a.createdAt || ""
+        ).getTime()
     )
     .slice(0, 5);
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: -25 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.5 }}
-      className="app-card p-4 sm:p-6 rounded-2xl transition-all duration-500 shadow-lg"
+      initial={{
+        opacity: 0,
+        x: -25,
+      }}
+      animate={{
+        opacity: 1,
+        x: 0,
+      }}
+      transition={{
+        duration: 0.5,
+      }}
+      className="relative overflow-hidden app-card p-5 sm:p-6 rounded-3xl transition-all duration-500 shadow-2xl border border-white/10"
     >
-      <h2 className="text-xl sm:text-2xl font-bold mb-5">
-        Recent Activity
-      </h2>
+      <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-blue-500/5 to-purple-500/10 pointer-events-none" />
 
-      <div className="space-y-4">
-        {recentTasks.length > 0 ? (
-          recentTasks.map((task, index) => (
-            <motion.div
-              key={task._id}
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                delay: index * 0.1,
-                duration: 0.4,
-              }}
-              className="flex items-start gap-4 border-b border-[var(--border-main)] pb-4 last:border-b-0"
-            >
-              <div
-                className={`w-3 h-3 rounded-full mt-2 shrink-0 ${
-                  task.status === "Completed"
-                    ? "bg-green-400 shadow-[0_0_10px_rgba(34,197,94,0.7)]"
-                    : "bg-yellow-400 shadow-[0_0_10px_rgba(234,179,8,0.7)]"
-                }`}
-              />
+      <div className="relative z-10">
+        <div className="flex items-center justify-between gap-4 mb-7">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center text-white shadow-lg">
+              <Activity size={22} />
+            </div>
 
-              <div className="min-w-0">
-                <p className="text-sm sm:text-base break-words">
-                  <span className="font-semibold">{task.title}</span>{" "}
-                  is currently{" "}
-                  <span
-                    className={
-                      task.status === "Completed"
-                        ? "text-green-400"
-                        : "text-yellow-400"
-                    }
+            <div>
+              <h2 className="text-xl sm:text-2xl font-extrabold">
+                Recent Activity
+              </h2>
+
+              <p className="app-muted text-sm mt-1">
+                Latest workflow updates
+              </p>
+            </div>
+          </div>
+
+          <div className="w-3 h-3 rounded-full bg-cyan-400 animate-pulse" />
+        </div>
+
+        <div className="relative space-y-5">
+          <div className="absolute left-[22px] top-2 bottom-2 w-px bg-gradient-to-b from-cyan-500/50 via-blue-500/30 to-transparent" />
+
+          {recentTasks.length > 0 ? (
+            recentTasks.map((task, index) => {
+              const isCompleted =
+                task.status === "Completed";
+
+              return (
+                <motion.div
+                  key={task._id}
+                  initial={{
+                    opacity: 0,
+                    y: 15,
+                  }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                  }}
+                  transition={{
+                    delay: index * 0.08,
+                    duration: 0.35,
+                  }}
+                  className="relative flex items-start gap-4"
+                >
+                  <div
+                    className={`relative z-10 w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 shadow-lg border ${
+                      isCompleted
+                        ? "bg-green-500/15 border-green-500/30 text-green-400"
+                        : "bg-yellow-500/15 border-yellow-500/30 text-yellow-400"
+                    }`}
                   >
-                    {task.status}
-                  </span>
-                </p>
+                    {isCompleted ? (
+                      <CheckCircle2 size={20} />
+                    ) : (
+                      <AlertCircle size={20} />
+                    )}
+                  </div>
 
-                <p className="text-xs sm:text-sm app-muted mt-1">
-                  Priority: {task.priority || "Medium"}
-                </p>
-              </div>
-            </motion.div>
-          ))
-        ) : (
-          <p className="app-muted text-sm sm:text-base">
-            No recent activity yet.
-          </p>
-        )}
+                  <div className="app-soft rounded-2xl p-4 flex-1 border border-cyan-500/10 shadow-md hover:shadow-xl transition-all duration-300">
+                    <p className="text-sm sm:text-base break-words">
+                      <span className="font-bold">
+                        {task.title}
+                      </span>{" "}
+                      is currently{" "}
+                      <span
+                        className={
+                          isCompleted
+                            ? "text-green-400 font-semibold"
+                            : "text-yellow-400 font-semibold"
+                        }
+                      >
+                        {task.status}
+                      </span>
+                    </p>
+
+                    <div className="flex flex-wrap gap-2 mt-3">
+                      <span className="text-xs px-3 py-1 rounded-full bg-cyan-500/15 text-cyan-400 border border-cyan-500/20">
+                        Priority: {task.priority || "Medium"}
+                      </span>
+
+                      <span className="text-xs px-3 py-1 rounded-full app-card">
+                        <Clock3 size={12} className="inline mr-1" />
+                        Recent
+                      </span>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })
+          ) : (
+            <div className="app-soft rounded-2xl p-6 text-center border border-dashed border-cyan-500/20">
+              <p className="font-semibold">
+                No recent activity yet
+              </p>
+
+              <p className="app-muted text-sm mt-2">
+                Your task updates will appear here.
+              </p>
+            </div>
+          )}
+        </div>
       </div>
     </motion.div>
   );

@@ -4,7 +4,12 @@ import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
-import { X } from "lucide-react";
+import {
+  X,
+  CalendarDays,
+  Flag,
+  FileText,
+} from "lucide-react";
 
 type Props = {
   closeModal: () => void;
@@ -65,17 +70,21 @@ export default function CreateTaskModal({
       fetchTasks();
       closeModal();
     } catch (error) {
-      console.log(error);
-      toast.error("Failed to create");
+      toast.error("Failed to create task");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
-
+    <div
+      onClick={closeModal}
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 backdrop-blur-md p-4"
+    >
       <motion.div
+        onClick={(e) =>
+          e.stopPropagation()
+        }
         initial={{
           opacity: 0,
           scale: 0.9,
@@ -89,113 +98,151 @@ export default function CreateTaskModal({
         transition={{
           duration: 0.3,
         }}
-        className="w-full max-w-2xl app-card rounded-3xl p-6 sm:p-8 border border-white/10 shadow-2xl"
+        className="relative overflow-hidden w-full max-w-2xl app-card rounded-3xl border border-white/10 shadow-[0_0_40px_rgba(6,182,212,0.18)]"
       >
-        {/* HEADER */}
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-3xl font-bold">
-            Create New Task
-          </h2>
+        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-blue-500/5 to-purple-500/10 pointer-events-none" />
 
-          <button
-            onClick={closeModal}
-            className="app-soft w-11 h-11 rounded-2xl flex items-center justify-center hover:scale-105 transition-all duration-300"
-          >
-            <X size={20} />
-          </button>
-        </div>
-
-        {/* FORM */}
-        <form
-          onSubmit={createTask}
-          className="space-y-5"
-        >
-          <div>
-            <label className="block mb-2 font-medium">
-              Task Title
-            </label>
-
-            <input
-              type="text"
-              placeholder="Enter task title"
-              value={title}
-              onChange={(e) =>
-                setTitle(e.target.value)
-              }
-              className="w-full p-4 rounded-2xl app-input outline-none"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block mb-2 font-medium">
-              Description
-            </label>
-
-            <textarea
-              placeholder="Enter task description"
-              value={description}
-              onChange={(e) =>
-                setDescription(
-                  e.target.value
-                )
-              }
-              className="w-full p-4 rounded-2xl app-input outline-none min-h-[140px]"
-              required
-            />
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-
+        <div className="relative z-10 p-6 sm:p-8">
+          <div className="flex items-center justify-between mb-8">
             <div>
-              <label className="block mb-2 font-medium">
-                Priority
+              <h2 className="text-3xl font-black">
+                Create New Task
+              </h2>
+
+              <p className="app-muted mt-2 text-sm">
+                Organize your work efficiently
+              </p>
+            </div>
+
+            <button
+              onClick={closeModal}
+              className="app-soft w-11 h-11 rounded-2xl flex items-center justify-center hover:scale-105 transition-all duration-300"
+            >
+              <X size={20} />
+            </button>
+          </div>
+
+          <form
+            onSubmit={createTask}
+            className="space-y-5"
+          >
+            <div>
+              <label className="block mb-2 font-semibold">
+                Task Title
               </label>
 
-              <select
-                value={priority}
-                onChange={(e) =>
-                  setPriority(
-                    e.target.value
-                  )
-                }
-                className="w-full p-4 rounded-2xl app-input outline-none"
-              >
-                <option>Low</option>
-                <option>Medium</option>
-                <option>High</option>
-              </select>
+              <div className="relative">
+                <FileText
+                  size={18}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 app-muted"
+                />
+
+                <input
+                  type="text"
+                  placeholder="Enter task title"
+                  value={title}
+                  onChange={(e) =>
+                    setTitle(e.target.value)
+                  }
+                  className="w-full pl-12 pr-4 py-4 rounded-2xl app-input"
+                  required
+                />
+              </div>
             </div>
 
             <div>
-              <label className="block mb-2 font-medium">
-                Due Date
+              <label className="block mb-2 font-semibold">
+                Description
               </label>
 
-              <input
-                type="date"
-                value={dueDate}
+              <textarea
+                placeholder="Describe your task..."
+                value={description}
                 onChange={(e) =>
-                  setDueDate(
+                  setDescription(
                     e.target.value
                   )
                 }
-                className="w-full p-4 rounded-2xl app-input outline-none"
+                className="w-full p-4 rounded-2xl app-input min-h-[140px]"
+                required
               />
             </div>
 
-          </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div>
+                <label className="block mb-2 font-semibold">
+                  Priority
+                </label>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 text-white py-4 rounded-2xl font-semibold hover:scale-[1.02] transition-all duration-300 shadow-lg"
-          >
-            {loading
-              ? "Creating..."
-              : "Create Task"}
-          </button>
-        </form>
+                <div className="relative">
+                  <Flag
+                    size={18}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 app-muted"
+                  />
+
+                  <select
+                    value={priority}
+                    onChange={(e) =>
+                      setPriority(
+                        e.target.value
+                      )
+                    }
+                    className="w-full pl-12 pr-4 py-4 rounded-2xl app-input"
+                  >
+                    <option>
+                      Low
+                    </option>
+                    <option>
+                      Medium
+                    </option>
+                    <option>
+                      High
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block mb-2 font-semibold">
+                  Due Date
+                </label>
+
+                <div className="relative">
+                  <CalendarDays
+                    size={18}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 app-muted pointer-events-none"
+                  />
+
+                  <input
+                    type="date"
+                    value={dueDate}
+                    onChange={(e) =>
+                      setDueDate(
+                        e.target.value
+                      )
+                    }
+                    className="w-full pl-12 pr-4 py-4 rounded-2xl app-input"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 text-white py-4 rounded-2xl font-semibold hover:scale-[1.02] transition-all duration-300 shadow-xl hover:shadow-cyan-500/30 disabled:opacity-50"
+            >
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  Creating Task...
+                </span>
+              ) : (
+                "Create Task"
+              )}
+            </button>
+          </form>
+        </div>
       </motion.div>
     </div>
   );

@@ -7,6 +7,7 @@ import {
   useState,
 } from "react";
 import axios from "axios";
+import { motion } from "framer-motion";
 import {
   Bot,
   Send,
@@ -43,14 +44,10 @@ export default function AIChat({ tasks }: Props) {
 
   useEffect(() => {
     const savedMessages =
-      localStorage.getItem(
-        "taskflow_ai_chat"
-      );
+      localStorage.getItem("taskflow_ai_chat");
 
     if (savedMessages) {
-      setMessages(
-        JSON.parse(savedMessages)
-      );
+      setMessages(JSON.parse(savedMessages));
     }
   }, []);
 
@@ -96,8 +93,7 @@ export default function AIChat({ tasks }: Props) {
 
     try {
       const userInfo = JSON.parse(
-        localStorage.getItem("userInfo") ||
-          "{}"
+        localStorage.getItem("userInfo") || "{}"
       );
 
       const { data } = await axios.post(
@@ -140,21 +136,21 @@ export default function AIChat({ tasks }: Props) {
   };
 
   const clearChat = () => {
-    setMessages([
+    const resetMessages = [
       {
-        role: "assistant",
+        role: "assistant" as const,
         content:
           "Chat cleared ✅ Ask me anything about your tasks.",
       },
-    ]);
+    ];
 
-    localStorage.removeItem(
-      "taskflow_ai_chat"
-    );
+    setMessages(resetMessages);
+    localStorage.removeItem("taskflow_ai_chat");
   };
 
   return (
     <div className="app-card rounded-3xl border border-white/10 shadow-2xl overflow-hidden w-full max-w-full flex flex-col">
+      {/* HEADER */}
       <div className="bg-gradient-to-r from-cyan-500/15 via-blue-500/10 to-purple-500/15 border-b border-white/10 p-4 sm:p-5">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
@@ -170,6 +166,13 @@ export default function AIChat({ tasks }: Props) {
               <p className="app-muted text-sm mt-1">
                 Ask questions, plan your day, and get task-based productivity insights.
               </p>
+
+              <div className="flex items-center gap-2 mt-2">
+                <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                <span className="text-xs text-green-400 font-medium">
+                  AI Online
+                </span>
+              </div>
             </div>
           </div>
 
@@ -202,18 +205,45 @@ export default function AIChat({ tasks }: Props) {
         </div>
       </div>
 
-      <div className="h-[55vh] min-h-[260px] max-h-[500px] overflow-y-auto p-4 sm:p-5 space-y-4 scroll-smooth">
+      {/* CHAT AREA */}
+      <div className="h-[60vh] min-h-[350px] max-h-[650px] overflow-y-auto p-4 sm:p-5 space-y-4 scroll-smooth">
+        {messages.length === 1 && (
+          <div className="text-center py-10">
+            <div className="w-20 h-20 mx-auto rounded-3xl bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center text-white shadow-xl">
+              <Bot size={36} />
+            </div>
+
+            <h3 className="text-xl font-bold mt-5">
+              Your AI Productivity Assistant
+            </h3>
+
+            <p className="app-muted mt-2">
+              Ask about priorities, deadlines, planning, and task management.
+            </p>
+          </div>
+        )}
+
         {messages.map((message, index) => (
-          <div
+          <motion.div
             key={index}
+            initial={{
+              opacity: 0,
+              y: 10,
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+            }}
+            transition={{
+              duration: 0.25,
+            }}
             className={`flex gap-3 ${
               message.role === "user"
                 ? "justify-end"
                 : "justify-start"
             }`}
           >
-            {message.role ===
-              "assistant" && (
+            {message.role === "assistant" && (
               <div className="w-10 h-10 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center text-white shrink-0">
                 <Bot size={18} />
               </div>
@@ -238,7 +268,7 @@ export default function AIChat({ tasks }: Props) {
                 <User size={18} />
               </div>
             )}
-          </div>
+          </motion.div>
         ))}
 
         {loading && (
@@ -260,6 +290,7 @@ export default function AIChat({ tasks }: Props) {
         <div ref={chatEndRef} />
       </div>
 
+      {/* INPUT */}
       <div className="border-t border-white/10 p-3 sm:p-4 sticky bottom-0 app-card z-10">
         <div className="flex flex-col sm:flex-row gap-3">
           <input
@@ -280,7 +311,7 @@ export default function AIChat({ tasks }: Props) {
           <button
             onClick={() => sendMessage()}
             disabled={loading}
-            className="sm:w-16 h-14 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center hover:scale-105 transition-all duration-300 shadow-lg disabled:opacity-50 text-white"
+            className="sm:w-16 h-14 rounded-2xl bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 flex items-center justify-center hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-cyan-500/30 disabled:opacity-50 text-white"
           >
             <Send size={21} />
           </button>
